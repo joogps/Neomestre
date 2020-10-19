@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct NeomestreApp: App {
+    @StateObject private var appData = DataModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if appData.resultado == nil {
+                LoginScreenView().environmentObject(appData)
+            } else {
+                ContentView().environmentObject(appData)
+            }
         }
     }
 }

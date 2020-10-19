@@ -1,16 +1,35 @@
 //
 //  ContentView.swift
-//  Shared
+//  Neomestre
 //
-//  Created by João Gabriel Pozzobon dos Santos on 14/10/20.
+//  Created by João Gabriel Pozzobon dos Santos on 16/10/20.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        TabView {
+            InicioView().tabItem {
+                Image(systemName: "house")
+                Text("Início")
+            }
+            
+            Text("Boletim").tabItem {
+                Image(systemName: "list.bullet.rectangle")
+                Text("Boletim")
+            }
+            
+            Text("Materiais").tabItem {
+                Image(systemName: "square.and.arrow.down")
+                Text("Materiais")
+            }
+            
+            Text("Recados").tabItem {
+                Image(systemName: "message")
+                Text("Recados")
+            }
+        }
     }
 }
 
