@@ -43,7 +43,7 @@ struct LoginScreenView: View {
                             }
                         }.buttonStyle(LoginButtonStyle())
                         
-                        Button(action: { withAnimation { showingManual = true } }) {
+                        Button(action: { withAnimation(.easeInOut(duration: 0.25)) { showingManual = true } }) {
                             HStack {
                                 Image(systemName: "rectangle.and.pencil.and.ellipsis")
                                     .font(.system(size: 16, weight: .bold))
@@ -58,12 +58,12 @@ struct LoginScreenView: View {
                         TextField("Código da instituição", text: $code).keyboardType(.numberPad).modifier(LoginTextFieldStyle())
                     
                         HStack {
-                            Button(action: { handleManual(username: username, password: password, code: code) }) { Text("Voltar") }
+                            Button(action: { withAnimation(.easeInOut(duration: 0.25)) { showingManual = false } }) { Text("Voltar") }
                                 .buttonStyle(LoginButtonStyle())
-                            Button(action: { withAnimation { showingManual = false } }) { Text("Entrar").bold() }
+                            Button(action: { withAnimation { handleManual(username: username, password: password, code: code) } }) { Text("Entrar").bold() }
                                 .buttonStyle(LoginButtonStyle())
                         }
-                    }.padding(25)
+                    }.padding(.horizontal, 45)
                 }
             }.blur(radius: showingProgress ? 5 : 0)
             .zIndex(1)
@@ -170,13 +170,18 @@ struct LoginTextFieldStyle : ViewModifier {
 
 struct ScannerView: View {
     @Binding var isPresented: Bool
+    
+    @State private var isCameraHidden = true
+    @State private var viewOffset: CGFloat = 0.0
+    
     var completion: (Result<String, CodeScannerView.ScanError>) -> Void
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 40).fill(Color.white)
+            RoundedRectangle(cornerRadius: 36, style: .continuous)
+                .fill(Color.white)
             
-            VStack (alignment: .center) {
+            VStack (alignment: .center, spacing: .zero) {
                 HStack {
                     Spacer()
                     Button(action: { withAnimation { isPresented = false } }) {
@@ -187,25 +192,55 @@ struct ScannerView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .font(Font.body.weight(.heavy))
-                                .scaleEffect(0.4)
+                                .scaleEffect(0.425)
                                 .foregroundColor(Color(white: 0.5))
                         }
-                    }.frame(width: 22, height: 22)
+                    }.frame(width: 23, height: 23)
                 }
-                Text("Escanear QR code")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(Color.black)
-                Text("Entre no seu Unimestre pelo navegador e selecione \"Acesso aplicativo móvel\"")
-                    .font(.system(size: 12))
-                    .foregroundColor(.black)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-                Spacer()
-                CodeScannerView(codeTypes: [.qr], completion: completion)
-                    .cornerRadius(25)
-                    .padding(.top, 20)
-            }.padding(26)
+                
+                VStack(spacing: .zero) {
+                    Text("Escanear QR code")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(Color.black)
+                    Text("Entre no seu Unimestre pelo navegador e selecione \"Acesso aplicativo móvel\"")
+                        .font(.system(size: 12))
+                        .foregroundColor(.black)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal).padding(.top, 2)
+                    Spacer()
+                    
+                    if !isCameraHidden {
+                        CodeScannerView(codeTypes: [.qr], completion: completion)
+                            .cornerRadius(25)
+                            .padding(.top, 20)
+                    } else {
+                        ZStack {
+                            Color.black.cornerRadius(25)
+                                .padding(.top, 20)
+                        }
+                    }
+                }.padding(2)
+            }.padding(24)
         }.frame(maxHeight: 540)
+        .offset(x: 0, y: viewOffset/2)
+        .gesture(
+            DragGesture()
+                .onChanged { gesture in
+                    withAnimation(.none) { viewOffset = gesture.translation.height > 0 ? gesture.translation.height : 0 }
+                }
+                .onEnded() { _ in
+                    if viewOffset > 150 {
+                        withAnimation { isPresented = false }
+                    } else {
+                        withAnimation(.easeInOut(duration: 0.25)) { viewOffset = .zero }
+                    }
+                }
+        )
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                isCameraHidden = false
+            }
+        }
     }
 }
 
