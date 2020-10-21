@@ -28,9 +28,9 @@ struct InicioView: View {
                     Button(action: { showingUserDetail = true }, label: {
                         URLImage(URL(string: "https://app.unimestre.com/mobile/v1.0/pessoa-imagem/"+String(pessoa.cd_pessoa))!, placeholder: Image(systemName: "person.crop.circle").resizable()) { proxy in
                             proxy.image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipShape(Circle())
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
                         }.frame(width: 38, height: 38)
                     })
                 }
@@ -41,9 +41,9 @@ struct InicioView: View {
     func titleDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, dd 'de' MMMM"
-         
+        
         let date = Date()
-         
+        
         dateFormatter.locale = Locale(identifier: "pt_BR")
         return dateFormatter.string(from: date).uppercased()
     }

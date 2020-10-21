@@ -9,6 +9,8 @@ import SwiftUI
 import CodeScanner
 
 struct LoginScreenView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject var appData: DataModel
     
     @State private var showingScanner = false
@@ -23,11 +25,11 @@ struct LoginScreenView: View {
     var body: some View {
         ZStack {
             VStack {
-                Image("Icon")
+                Image((colorScheme == .dark ? "Dark" : "Light") + "Icon")
                     .resizable()
                     .frame(width: 120, height: 120)
                     .clipShape(RoundedRectangle(cornerRadius: 21, style: .continuous))
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .shadow(color: colorScheme == .dark ? Color(white: 0.2).opacity(0.5) : Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("Neomestre")
                     .font(.system(size: 42, weight: .bold))
@@ -41,7 +43,7 @@ struct LoginScreenView: View {
                                     .font(.system(size: 16, weight: .bold))
                                 Text("Escanear QR code").bold()
                             }
-                        }.buttonStyle(LoginButtonStyle())
+                        }.buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
                         
                         Button(action: { withAnimation(.easeInOut(duration: 0.25)) { showingManual = true } }) {
                             HStack {
@@ -49,28 +51,28 @@ struct LoginScreenView: View {
                                     .font(.system(size: 16, weight: .bold))
                                 Text("Acesso manual").bold()
                             }
-                        }.buttonStyle(LoginButtonStyle())
-                    }.padding(25)
+                        }.buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
+                    }.padding(.top, 4)
                 } else {
                     VStack (spacing: 10) {
                         TextField("Usuário", text: $username).modifier(LoginTextFieldStyle())
                         SecureField("Senha", text: $password).modifier(LoginTextFieldStyle())
                         TextField("Código da instituição", text: $code).keyboardType(.numberPad).modifier(LoginTextFieldStyle())
-                    
+                        
                         HStack {
-                            Button(action: { withAnimation(.easeInOut(duration: 0.25)) { showingManual = false } }) { Text("Voltar") }
-                                .buttonStyle(LoginButtonStyle())
-                            Button(action: { withAnimation { handleManual(username: username, password: password, code: code) } }) { Text("Entrar").bold() }
-                                .buttonStyle(LoginButtonStyle())
-                        }
-                    }.padding(.horizontal, 45)
+                            Button(action: { withAnimation(.easeInOut(duration: 0.25)) { showingManual = false } }) { Text("Voltar").padding(.horizontal, 20) }
+                                .buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
+                            Button(action: { withAnimation { handleManual(username: username, password: password, code: code) } }) { Text("Entrar").bold().padding(.horizontal, 20) }
+                                .buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
+                        }.padding(.top, 2)
+                    }.padding(.horizontal, 45).padding(.top, 4)
                 }
             }.blur(radius: showingProgress ? 5 : 0)
             .zIndex(1)
             
             if showingProgress {
                 ZStack {
-                    Rectangle().fill(Color.white)
+                    Rectangle().fill(Color(.systemBackground))
                         .frame(width: 120, height: 120)
                         .cornerRadius(20)
                         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
@@ -79,7 +81,7 @@ struct LoginScreenView: View {
             }
             
             if showingScanner {
-                Color.gray.opacity(0.45)
+                Color.black.opacity(0.3)
                     .edgesIgnoringSafeArea(.all)
                     .zIndex(3)
                 VStack {
@@ -89,7 +91,12 @@ struct LoginScreenView: View {
                 }.transition(.move(edge: .bottom))
                 .edgesIgnoringSafeArea(.bottom)
                 .zIndex(4)
-                
+            }
+            
+            VStack {
+                Spacer()
+                Text("versão beta 1.0")
+                    .font(.system(size: 14, weight: .light))
             }
         }
     }
@@ -144,11 +151,13 @@ struct LoginScreenView: View {
 }
 
 struct LoginButtonStyle: ButtonStyle {
+    var colorScheme: ColorScheme
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(20)
-            .foregroundColor(Color.black)
-            .background(Color(white: 0.98))
+            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .background(colorScheme == .dark ? Color(.systemGray6) : Color(white: 0.98))
             .cornerRadius(20)
             .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
             .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
@@ -157,14 +166,18 @@ struct LoginButtonStyle: ButtonStyle {
 }
 
 struct LoginTextFieldStyle : ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    
     func body(content: Content) -> some View {
         content
             .padding(20)
-            .foregroundColor(Color.black)
-            .background(Color(white: 0.98))
             .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
-
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(colorScheme == .dark ? Color(.systemGray6) : Color(white: 0.95), lineWidth: 2)
+            )
+            .background(Color.clear)
+        
     }
 }
 
@@ -179,32 +192,21 @@ struct ScannerView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 36, style: .continuous)
-                .fill(Color.white)
+                .fill(Color(.systemGray6))
             
             VStack (alignment: .center, spacing: .zero) {
                 HStack {
                     Spacer()
                     Button(action: { withAnimation { isPresented = false } }) {
-                        ZStack {
-                            Circle()
-                                .fill(Color(white: 0.93))
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .scaledToFit()
-                                .font(Font.body.weight(.heavy))
-                                .scaleEffect(0.425)
-                                .foregroundColor(Color(white: 0.5))
-                        }
-                    }.frame(width: 23, height: 23)
+                        XExit()
+                    }.frame(width: 24, height: 24)
                 }
                 
                 VStack(spacing: .zero) {
                     Text("Escanear QR code")
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(Color.black)
                     Text("Entre no seu Unimestre pelo navegador e selecione \"Acesso aplicativo móvel\"")
                         .font(.system(size: 12))
-                        .foregroundColor(.black)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal).padding(.top, 2)
                     Spacer()
@@ -240,6 +242,23 @@ struct ScannerView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 isCameraHidden = false
             }
+        }
+    }
+}
+
+struct XExit: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(Color(white: colorScheme == .dark ? 0.19 : 0.93))
+            Image(systemName: "xmark")
+                .resizable()
+                .scaledToFit()
+                .font(Font.body.weight(.heavy))
+                .scaleEffect(0.425)
+                .foregroundColor(Color(white: colorScheme == .dark ? 0.93 : 0.6))
         }
     }
 }

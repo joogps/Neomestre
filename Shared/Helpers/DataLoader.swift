@@ -15,7 +15,7 @@ struct DataLoader {
         request.setValue("\(String(describing: json.count))", forHTTPHeaderField: "Content-Length")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = json
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
@@ -38,11 +38,11 @@ struct DataLoader {
         }
         task.resume()
     }
-
+    
     static func sync(id: Int, completion: @escaping (Result<Resultado, Error>) -> Void) {
         let url = URL(string: "https://app.unimestre.com/mobile/v3.0/sincronizacao?ds_filtro="+String(id))!
         let request = URLRequest(url: url)
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
@@ -65,7 +65,7 @@ struct DataLoader {
         }
         task.resume()
     }
-
+    
     static func handle(data: Data) -> Result<Resultado, Error> {
         do {
             let decoder = JSONDecoder()

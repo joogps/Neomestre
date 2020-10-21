@@ -36,9 +36,9 @@ struct UserDetailView: View {
                         HStack {
                             URLImage(URL(string: "https://app.unimestre.com/mobile/v1.0/pessoa-imagem/"+String(pessoa.cd_pessoa))!, placeholder: Image(systemName: "person.crop.circle").resizable()) { proxy in
                                 proxy.image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .clipShape(Circle())
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
                             }.frame(width: 60, height: 60).padding(10)
                             
                             VStack(alignment: .leading) {
