@@ -8,16 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2720395425378C6D0010FEF7 /* NeomestreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720394125378C6C0010FEF7 /* NeomestreApp.swift */; };
-		2720395525378C6D0010FEF7 /* NeomestreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720394125378C6C0010FEF7 /* NeomestreApp.swift */; };
 		2720395625378C6D0010FEF7 /* LoginScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720394225378C6C0010FEF7 /* LoginScreenView.swift */; };
-		2720395725378C6D0010FEF7 /* LoginScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720394225378C6C0010FEF7 /* LoginScreenView.swift */; };
 		2720395825378C6D0010FEF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2720394325378C6D0010FEF7 /* Assets.xcassets */; };
-		2720395925378C6D0010FEF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2720394325378C6D0010FEF7 /* Assets.xcassets */; };
 		2720396625378CA70010FEF7 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 2720396525378CA70010FEF7 /* CodeScanner */; };
 		2776E7F4253A0DB1001A3482 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2776E7F3253A0DB1001A3482 /* ContentView.swift */; };
-		2776E7F5253A0DB1001A3482 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2776E7F3253A0DB1001A3482 /* ContentView.swift */; };
 		27938C1F253A42A20012BFF0 /* InicioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27938C1E253A42A20012BFF0 /* InicioView.swift */; };
-		27938C20253A42A20012BFF0 /* InicioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27938C1E253A42A20012BFF0 /* InicioView.swift */; };
 		27C79CDF253C8D04003D0512 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 27C79CDE253C8D04003D0512 /* URLImage */; };
 		27C79D1C253CD171003D0512 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1B253CD171003D0512 /* UserDetailView.swift */; };
 		27C79D20253CD6E2003D0512 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1F253CD6E2003D0512 /* DataLoader.swift */; };
@@ -30,9 +25,6 @@
 		2720394325378C6D0010FEF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2720394825378C6D0010FEF7 /* Neomestre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neomestre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2720394B25378C6D0010FEF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2720395025378C6D0010FEF7 /* Neomestre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neomestre.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2720395225378C6D0010FEF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2720395325378C6D0010FEF7 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		2776E7F3253A0DB1001A3482 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		27938C1E253A42A20012BFF0 /* InicioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InicioView.swift; sourceTree = "<group>"; };
 		27C79D1B253CD171003D0512 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
@@ -50,64 +42,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2720394D25378C6D0010FEF7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		2720393B25378C6C0010FEF7 = {
 			isa = PBXGroup;
 			children = (
-				2720394025378C6C0010FEF7 /* Shared */,
-				2720394A25378C6D0010FEF7 /* iOS */,
-				2720395125378C6D0010FEF7 /* macOS */,
+				2720394025378C6C0010FEF7 /* Neomestre */,
 				2720394925378C6D0010FEF7 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		2720394025378C6C0010FEF7 /* Shared */ = {
+		2720394025378C6C0010FEF7 /* Neomestre */ = {
 			isa = PBXGroup;
 			children = (
 				2720394125378C6C0010FEF7 /* NeomestreApp.swift */,
-				2720394225378C6C0010FEF7 /* LoginScreenView.swift */,
 				2776E7F3253A0DB1001A3482 /* ContentView.swift */,
+				2720394225378C6C0010FEF7 /* LoginScreenView.swift */,
 				27938C1E253A42A20012BFF0 /* InicioView.swift */,
 				27C79D1B253CD171003D0512 /* UserDetailView.swift */,
 				27C79D23253CD6F8003D0512 /* Helpers */,
 				2720394325378C6D0010FEF7 /* Assets.xcassets */,
+				2720394B25378C6D0010FEF7 /* Info.plist */,
 			);
-			path = Shared;
+			path = Neomestre;
 			sourceTree = "<group>";
 		};
 		2720394925378C6D0010FEF7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				2720394825378C6D0010FEF7 /* Neomestre.app */,
-				2720395025378C6D0010FEF7 /* Neomestre.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		2720394A25378C6D0010FEF7 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				2720394B25378C6D0010FEF7 /* Info.plist */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		2720395125378C6D0010FEF7 /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				2720395225378C6D0010FEF7 /* Info.plist */,
-				2720395325378C6D0010FEF7 /* macOS.entitlements */,
-			);
-			path = macOS;
 			sourceTree = "<group>";
 		};
 		27C79D23253CD6F8003D0512 /* Helpers */ = {
@@ -143,23 +109,6 @@
 			productReference = 2720394825378C6D0010FEF7 /* Neomestre.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2720394F25378C6D0010FEF7 /* Neomestre (macOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2720395F25378C6D0010FEF7 /* Build configuration list for PBXNativeTarget "Neomestre (macOS)" */;
-			buildPhases = (
-				2720394C25378C6D0010FEF7 /* Sources */,
-				2720394D25378C6D0010FEF7 /* Frameworks */,
-				2720394E25378C6D0010FEF7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Neomestre (macOS)";
-			productName = "Neomestre (macOS)";
-			productReference = 2720395025378C6D0010FEF7 /* Neomestre.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -170,9 +119,6 @@
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
 					2720394725378C6D0010FEF7 = {
-						CreatedOnToolsVersion = 12.2;
-					};
-					2720394F25378C6D0010FEF7 = {
 						CreatedOnToolsVersion = 12.2;
 					};
 				};
@@ -195,7 +141,6 @@
 			projectRoot = "";
 			targets = (
 				2720394725378C6D0010FEF7 /* Neomestre (iOS) */,
-				2720394F25378C6D0010FEF7 /* Neomestre (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -206,14 +151,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2720395825378C6D0010FEF7 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2720394E25378C6D0010FEF7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2720395925378C6D0010FEF7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,17 +168,6 @@
 				2776E7F4253A0DB1001A3482 /* ContentView.swift in Sources */,
 				27C79D1C253CD171003D0512 /* UserDetailView.swift in Sources */,
 				27E7B0F52538E45A00757A47 /* DataModel.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2720394C25378C6D0010FEF7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27938C20253A42A20012BFF0 /* InicioView.swift in Sources */,
-				2720395725378C6D0010FEF7 /* LoginScreenView.swift in Sources */,
-				2720395525378C6D0010FEF7 /* NeomestreApp.swift in Sources */,
-				2776E7F5253A0DB1001A3482 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,7 +293,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9NAXV39HG;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = Neomestre/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -389,7 +315,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9NAXV39HG;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
+				INFOPLIST_FILE = Neomestre/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -401,54 +327,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		2720396025378C6D0010FEF7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = X9NAXV39HG;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.joogps.Neomestre;
-				PRODUCT_NAME = Neomestre;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		2720396125378C6D0010FEF7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = X9NAXV39HG;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.joogps.Neomestre;
-				PRODUCT_NAME = Neomestre;
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -469,15 +347,6 @@
 			buildConfigurations = (
 				2720395D25378C6D0010FEF7 /* Debug */,
 				2720395E25378C6D0010FEF7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2720395F25378C6D0010FEF7 /* Build configuration list for PBXNativeTarget "Neomestre (macOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2720396025378C6D0010FEF7 /* Debug */,
-				2720396125378C6D0010FEF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
