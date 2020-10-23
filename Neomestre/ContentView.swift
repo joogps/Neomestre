@@ -20,7 +20,7 @@ struct ContentView: View {
                 Text("Boletim")
             }
             
-            Text("Materiais").tabItem {
+            MateriaisView().tabItem {
                 Image(systemName: "square.and.arrow.down")
                 Text("Materiais")
             }

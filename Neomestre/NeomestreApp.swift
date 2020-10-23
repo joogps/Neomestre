@@ -13,7 +13,7 @@ struct NeomestreApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if appData.resultado == nil {
+            if appData.resultados.count == 0 {
                 LoginScreenView().environmentObject(appData)
             } else {
                 ContentView().environmentObject(appData)

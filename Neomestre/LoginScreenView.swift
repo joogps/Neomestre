@@ -9,12 +9,12 @@ import SwiftUI
 import CodeScanner
 
 struct LoginScreenView: View {
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var appData: DataModel
     
     @State private var showingScanner = false
-    @State private var showingProgress = false
     
     @State private var showingManual = false
     
@@ -22,8 +22,14 @@ struct LoginScreenView: View {
     @State var password = ""
     @State var code = ""
     
+    @State private var showingProgress = false
+    
     var body: some View {
         ZStack {
+            Rectangle()
+                .fill(colorScheme == .dark ? Color.black : Color.white)
+                .edgesIgnoringSafeArea(.all)
+            
             VStack {
                 Image((colorScheme == .dark ? "Dark" : "Light") + "Icon")
                     .resizable()
@@ -64,7 +70,7 @@ struct LoginScreenView: View {
                                 .buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
                             Button(action: { withAnimation { handleManual(username: username, password: password, code: code) } }) { Text("Entrar").bold().padding(.horizontal, 20) }
                                 .buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
-                        }.padding(.top, 2)
+                        }.padding(.top, 4)
                     }.padding(.horizontal, 45).padding(.top, 4)
                 }
             }.blur(radius: showingProgress ? 5 : 0)
@@ -142,7 +148,13 @@ struct LoginScreenView: View {
         switch result {
         case .success(let resultado):
             withAnimation { showingProgress = false }
-            appData.resultado = resultado
+            appData.resultados.append(resultado)
+            if appData.resultados.count == 1 {
+                appData.codigoResultadoAtual = resultado.cd_pessoa
+                appData.codigoTurmaAtual = resultado.turmas.last?.cd_turma
+            }
+            appData.syncData()
+            presentationMode.wrappedValue.dismiss()
         case .failure(let error):
             withAnimation { showingProgress = false }
             print(error.localizedDescription)
@@ -156,7 +168,7 @@ struct LoginButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(20)
-            .foregroundColor(colorScheme == .dark ? .white : .black)
+            .foregroundColor(Color.primary)
             .background(colorScheme == .dark ? Color(.systemGray6) : Color(white: 0.98))
             .cornerRadius(20)
             .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)

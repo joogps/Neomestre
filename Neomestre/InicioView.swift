@@ -11,31 +11,35 @@ import URLImage
 struct InicioView: View {
     @EnvironmentObject var appData: DataModel
     
-    @State private var showingUserDetail = false
+    @State private var showingSettings = false
     
     var body: some View {
         ScrollView {
+            let resultado = appData.resultadoAtual
+            
             HStack {
                 VStack (alignment: .leading, spacing: 2) {
                     Text(titleDate()).foregroundColor(.gray).font(.footnote).bold()
                     Text("Início").font(.largeTitle).bold()
                 }
                 Spacer()
-                VStack {
-                    Spacer()
-                    
-                    let pessoa = appData.resultado!.pessoas[0]
-                    Button(action: { showingUserDetail = true }, label: {
-                        URLImage(URL(string: "https://app.unimestre.com/mobile/v1.0/pessoa-imagem/"+String(pessoa.cd_pessoa))!, placeholder: Image(systemName: "person.crop.circle").resizable()) { proxy in
-                            proxy.image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                        }.frame(width: 38, height: 38)
-                    })
+                
+                if resultado != nil {
+                    VStack {
+                        Spacer()
+                        
+                        Button(action: { showingSettings = true }, label: {
+                            URLImage(URL(string: "https://app.unimestre.com/mobile/v1.0/pessoa-imagem/"+String(resultado!.cd_pessoa))!, placeholder: Image(systemName: "person.crop.circle").resizable()) { proxy in
+                                proxy.image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                            }.frame(width: 38, height: 38)
+                        })
+                    }
                 }
             }.padding(.horizontal, 20).padding(.vertical, 12)
-        }.padding(.top, 1).sheet(isPresented: $showingUserDetail) { UserDetailView() }
+        }.padding(.top, 1).sheet(isPresented: $showingSettings) { SettingsView().environmentObject(appData) }
     }
     
     func titleDate() -> String {
