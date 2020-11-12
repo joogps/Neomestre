@@ -15,8 +15,6 @@ struct InicioView: View {
     
     var body: some View {
         ScrollView {
-            let resultado = appData.resultadoAtual
-            
             HStack {
                 VStack (alignment: .leading, spacing: 2) {
                     Text(titleDate()).foregroundColor(.gray).font(.footnote).bold()
@@ -24,12 +22,12 @@ struct InicioView: View {
                 }
                 Spacer()
                 
-                if resultado != nil {
+                if let resultado = appData.resultadoAtual {
                     VStack {
                         Spacer()
                         
                         Button(action: { showingSettings = true }, label: {
-                            URLImage(URL(string: "https://app.unimestre.com/mobile/v1.0/pessoa-imagem/"+String(resultado!.cd_pessoa))!, placeholder: Image(systemName: "person.crop.circle").resizable()) { proxy in
+                            URLImage(URL(string: "https://app.unimestre.com/mobile/v1.0/pessoa-imagem/"+String(resultado.cd_pessoa))!, placeholder: Image(systemName: "person.crop.circle").resizable()) { proxy in
                                 proxy.image
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -38,7 +36,7 @@ struct InicioView: View {
                         })
                     }
                 }
-            }.padding(.horizontal, 20).padding(.vertical, 12)
+            }.padding(.horizontal, 20).padding(.vertical, 26)
         }.padding(.top, 1).sheet(isPresented: $showingSettings) { SettingsView().environmentObject(appData) }
     }
     
@@ -50,28 +48,6 @@ struct InicioView: View {
         
         dateFormatter.locale = Locale(identifier: "pt_BR")
         return dateFormatter.string(from: date).uppercased()
-    }
-}
-
-struct InicioBlockView: View {
-    var body: some View {
-        VStack {
-            HStack {
-                Label("Materiais de apoio", systemImage: "square.and.arrow.down")
-                    .font(.system(size: 20, weight: .semibold))
-                Spacer()
-                Image(systemName: "arrow.right")
-                    .font(.system(size: 20, weight: .semibold))
-            }.padding(20).foregroundColor(.purple)
-            
-        }.background(Color(.systemBackground))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.purple, lineWidth: 2)
-        )
-        .cornerRadius(12)
-        .padding(.horizontal, 20)
-        .shadow(color: Color.black.opacity(0.05), radius: 2, y: 5)
     }
 }
 

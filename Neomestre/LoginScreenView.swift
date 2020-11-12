@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeScanner
+import SlideOverCard
 
 struct LoginScreenView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -34,7 +35,7 @@ struct LoginScreenView: View {
                 Image((colorScheme == .dark ? "Dark" : "Light") + "Icon")
                     .resizable()
                     .frame(width: 120, height: 120)
-                    .clipShape(RoundedRectangle(cornerRadius: 21, style: .continuous))
+                    .continuousCornerRadius(cornerRadius: 21.0)
                     .shadow(color: colorScheme == .dark ? Color(white: 0.2).opacity(0.5) : Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
                 
                 Text("Neomestre")
@@ -44,19 +45,11 @@ struct LoginScreenView: View {
                 if !showingManual {
                     VStack (spacing: 10) {
                         Button(action: { withAnimation { showingScanner = true } }) {
-                            HStack {
-                                Image(systemName: "qrcode")
-                                    .font(.system(size: 16, weight: .bold))
-                                Text("Escanear QR code").bold()
-                            }
+                            Label("Escanear QR code", systemImage: "qrcode").font(.system(size: 16, weight: .bold))
                         }.buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
                         
                         Button(action: { withAnimation(.easeInOut(duration: 0.25)) { showingManual = true } }) {
-                            HStack {
-                                Image(systemName: "rectangle.and.pencil.and.ellipsis")
-                                    .font(.system(size: 16, weight: .bold))
-                                Text("Acesso manual").bold()
-                            }
+                            Label("Acesso manual", systemImage: "rectangle.and.pencil.and.ellipsis").font(.system(size: 16, weight: .bold))
                         }.buttonStyle(LoginButtonStyle(colorScheme: colorScheme))
                     }.padding(.top, 4)
                 } else {
@@ -77,26 +70,9 @@ struct LoginScreenView: View {
             .zIndex(1)
             
             if showingProgress {
-                ZStack {
-                    Rectangle().fill(Color(.systemBackground))
-                        .frame(width: 120, height: 120)
-                        .cornerRadius(20)
-                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
-                    ProgressView("Aguarde...")
-                }.zIndex(2)
-            }
-            
-            if showingScanner {
-                Color.black.opacity(0.3)
-                    .edgesIgnoringSafeArea(.all)
-                    .zIndex(3)
-                VStack {
-                    Spacer()
-                    ScannerView(isPresented: $showingScanner, completion: self.handleScan)
-                        .padding([.horizontal, .bottom], 6)
-                }.transition(.move(edge: .bottom))
-                .edgesIgnoringSafeArea(.bottom)
-                .zIndex(4)
+                ProgressView("Aguarde...")
+                    .progressViewStyle(BackdropProgressView())
+                    .zIndex(2)
             }
             
             VStack {
@@ -104,7 +80,7 @@ struct LoginScreenView: View {
                 Text("versão beta 1.0")
                     .font(.system(size: 14, weight: .light))
             }
-        }
+        }.slideOverCard(isPresented: $showingScanner, content: { ScannerView(isPresented: $showingScanner, completion: self.handleScan) })
     }
     
     func handleScan(result: Result<String, CodeScannerView.ScanError>) {
@@ -165,7 +141,7 @@ struct LoginScreenView: View {
 struct LoginButtonStyle: ButtonStyle {
     var colorScheme: ColorScheme
     
-    func makeBody(configuration: Self.Configuration) -> some View {
+    func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(20)
             .foregroundColor(Color.primary)
@@ -177,7 +153,7 @@ struct LoginButtonStyle: ButtonStyle {
     }
 }
 
-struct LoginTextFieldStyle : ViewModifier {
+struct LoginTextFieldStyle: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
     
     func body(content: Content) -> some View {
@@ -193,84 +169,63 @@ struct LoginTextFieldStyle : ViewModifier {
     }
 }
 
+struct ContinuousCornerRadius: ViewModifier {
+    var cornerRadius: CGFloat
+    func body(content: Content) -> some View {
+        content.clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+    }
+}
+
+extension View {
+    func continuousCornerRadius(cornerRadius: CGFloat) -> some View {
+        self.modifier(ContinuousCornerRadius(cornerRadius: cornerRadius))
+    }
+}
+
+struct BackdropProgressView: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack(spacing: 10) {
+            ProgressView()
+            configuration.label.foregroundColor(.gray)
+        }.padding(20).background(Rectangle().fill(Color(.systemBackground))
+                                    .aspectRatio(1.0, contentMode: .fill)
+                                    .cornerRadius(20)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5))
+    }
+}
+
 struct ScannerView: View {
     @Binding var isPresented: Bool
     
     @State private var isCameraHidden = true
-    @State private var viewOffset: CGFloat = 0.0
     
     var completion: (Result<String, CodeScannerView.ScanError>) -> Void
     
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 36, style: .continuous)
-                .fill(Color(.systemGray6))
+        VStack(spacing: .zero) {
+            Text("Escanear QR code")
+                .font(.system(size: 28, weight: .bold))
+            Text("Entre no seu Unimestre pelo navegador e selecione \"Acesso aplicativo móvel\"")
+                .font(.system(size: 12))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal).padding(.top, 2)
+            Spacer()
             
-            VStack (alignment: .center, spacing: .zero) {
-                HStack {
-                    Spacer()
-                    Button(action: { withAnimation { isPresented = false } }) {
-                        XExit()
-                    }.frame(width: 24, height: 24)
+            if !isCameraHidden {
+                CodeScannerView(codeTypes: [.qr], completion: completion)
+                    .cornerRadius(25)
+                    .padding(.top, 20)
+            } else {
+                ZStack {
+                    Color.black.cornerRadius(25)
+                        .padding(.top, 20)
                 }
-                
-                VStack(spacing: .zero) {
-                    Text("Escanear QR code")
-                        .font(.system(size: 28, weight: .bold))
-                    Text("Entre no seu Unimestre pelo navegador e selecione \"Acesso aplicativo móvel\"")
-                        .font(.system(size: 12))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal).padding(.top, 2)
-                    Spacer()
-                    
-                    if !isCameraHidden {
-                        CodeScannerView(codeTypes: [.qr], completion: completion)
-                            .cornerRadius(25)
-                            .padding(.top, 20)
-                    } else {
-                        ZStack {
-                            Color.black.cornerRadius(25)
-                                .padding(.top, 20)
-                        }
-                    }
-                }.padding(2)
-            }.padding(24)
-        }.frame(maxHeight: 540)
-        .offset(x: 0, y: viewOffset/2)
-        .gesture(
-            DragGesture()
-                .onChanged { gesture in
-                    withAnimation(.none) { viewOffset = gesture.translation.height > 0 ? gesture.translation.height : 0 }
-                }
-                .onEnded() { _ in
-                    if viewOffset > 150 {
-                        withAnimation { isPresented = false }
-                    } else {
-                        withAnimation(.easeInOut(duration: 0.25)) { viewOffset = .zero }
-                    }
-                }
-        )
+            }
+        }.frame(maxHeight: 420)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 isCameraHidden = false
             }
-        }
-    }
-}
-
-struct XExit: View {
-    @Environment(\.colorScheme) var colorScheme
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(Color(white: colorScheme == .dark ? 0.19 : 0.93))
-            Image(systemName: "xmark")
-                .resizable()
-                .scaledToFit()
-                .font(Font.body.weight(.heavy))
-                .scaleEffect(0.425)
-                .foregroundColor(Color(white: colorScheme == .dark ? 0.93 : 0.6))
         }
     }
 }

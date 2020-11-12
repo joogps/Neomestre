@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "SlideOverCard",
+        "repositoryURL": "git@github.com:joogps/SlideOverCard.git",
+        "state": {
+          "branch": null,
+          "revision": "75ddd77826e22a73b23168430a601af3bc8eaef8",
+          "version": "1.0.0"
+        }
+      },
+      {
         "package": "URLImage",
         "repositoryURL": "https://github.com/dmytro-anokhin/url-image.git",
         "state": {

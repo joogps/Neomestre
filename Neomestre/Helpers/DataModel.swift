@@ -14,21 +14,31 @@ class DataModel: ObservableObject {
     @Published var codigoTurmaAtual: Int? = UserDefaults.standard.integer(forKey: "turmaAtual")
     
     var resultadoAtual: Resultado? {
-        get {
-            if let resultado = resultados.first(where: { $0.cd_pessoa == codigoResultadoAtual }) {
-                return resultado
-            }
-            return nil
+        if let resultado = resultados.first(where: { $0.cd_pessoa == codigoResultadoAtual }) {
+            return resultado
         }
+        return nil
     }
     
     var turmaAtual: Turma? {
-        get {
-            if let turma = resultadoAtual!.turmas.first(where: { $0.cd_turma == codigoTurmaAtual }) {
-                return turma
-            }
-            return nil
+        if let turma = resultadoAtual!.turmas.first(where: { $0.cd_turma == codigoTurmaAtual }) {
+            return turma
         }
+        return nil
+    }
+    
+    var disciplinasAtuais: [DisciplinaMaterialApoio]? {
+        if let resultado = resultadoAtual {
+            return resultado.arr_disciplinas_material_apoio.filter( { $0.cd_turma == codigoTurmaAtual } )
+        }
+        return nil
+    }
+    
+    var materiaisAtuais: [MaterialApoio]? {
+        if let resultado = resultadoAtual {
+            return resultado.arr_materiais_apoio.filter( { $0.cd_turma == codigoTurmaAtual } )
+        }
+        return nil
     }
     
     init() {
@@ -54,12 +64,20 @@ class DataModel: ObservableObject {
         UserDefaults.standard.set(codigoResultadoAtual, forKey: "pessoaAtual")
         UserDefaults.standard.set(codigoTurmaAtual, forKey: "turmaAtual")
     }
+    
+    func getMateriais(for disciplina: DisciplinaMaterialApoio) -> [MaterialApoio]? {
+        if let resultado = resultadoAtual {
+            return resultado.arr_materiais_apoio.filter( { $0.cd_disciplina == disciplina.cd_disciplina } )
+        }
+        return nil
+    }
 }
 
 struct Resultado: Codable, Hashable {
     var pessoas: [Pessoa]
     var turmas: [Turma]
     var arr_disciplinas_material_apoio: [DisciplinaMaterialApoio]
+    var arr_materiais_apoio: [MaterialApoio]
     
     var pessoa: Pessoa {
         get { return pessoas[0] }
@@ -82,7 +100,18 @@ struct Turma: Codable, Hashable {
 }
 
 struct DisciplinaMaterialApoio: Codable, Hashable {
+    var cd_disciplina: Int
     var ds_disciplina: String
+    var cd_turma: Int
+}
+
+struct MaterialApoio: Codable, Hashable {
+    var cd_disciplina: Int
+    var cd_turma: Int
+    var ds_titulo: String
+    var me_descricao: String
+    var dt_material: String
+    var cd_material_apoio: Int
 }
 
 struct Response: Codable {

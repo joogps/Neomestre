@@ -13,6 +13,7 @@
 		2720396625378CA70010FEF7 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 2720396525378CA70010FEF7 /* CodeScanner */; };
 		2776E7F4253A0DB1001A3482 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2776E7F3253A0DB1001A3482 /* ContentView.swift */; };
 		27938C1F253A42A20012BFF0 /* InicioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27938C1E253A42A20012BFF0 /* InicioView.swift */; };
+		27BEDA25255D66E300C449F9 /* SlideOverCard in Frameworks */ = {isa = PBXBuildFile; productRef = 27BEDA24255D66E300C449F9 /* SlideOverCard */; };
 		27C79CDF253C8D04003D0512 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 27C79CDE253C8D04003D0512 /* URLImage */; };
 		27C79D1C253CD171003D0512 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1B253CD171003D0512 /* SettingsView.swift */; };
 		27C79D20253CD6E2003D0512 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1F253CD6E2003D0512 /* DataLoader.swift */; };
@@ -40,6 +41,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27C79CDF253C8D04003D0512 /* URLImage in Frameworks */,
+				27BEDA25255D66E300C449F9 /* SlideOverCard in Frameworks */,
 				2720396625378CA70010FEF7 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +109,7 @@
 			packageProductDependencies = (
 				2720396525378CA70010FEF7 /* CodeScanner */,
 				27C79CDE253C8D04003D0512 /* URLImage */,
+				27BEDA24255D66E300C449F9 /* SlideOverCard */,
 			);
 			productName = "Neomestre (iOS)";
 			productReference = 2720394825378C6D0010FEF7 /* Neomestre.app */;
@@ -138,6 +141,7 @@
 			packageReferences = (
 				2720396425378CA70010FEF7 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 				27C79CDD253C8D04003D0512 /* XCRemoteSwiftPackageReference "url-image" */,
+				27BEDA23255D66E300C449F9 /* XCRemoteSwiftPackageReference "SlideOverCard" */,
 			);
 			productRefGroup = 2720394925378C6D0010FEF7 /* Products */;
 			projectDirPath = "";
@@ -366,6 +370,14 @@
 				minimumVersion = 1.0.6;
 			};
 		};
+		27BEDA23255D66E300C449F9 /* XCRemoteSwiftPackageReference "SlideOverCard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:joogps/SlideOverCard.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		27C79CDD253C8D04003D0512 /* XCRemoteSwiftPackageReference "url-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
@@ -381,6 +393,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2720396425378CA70010FEF7 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		27BEDA24255D66E300C449F9 /* SlideOverCard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 27BEDA23255D66E300C449F9 /* XCRemoteSwiftPackageReference "SlideOverCard" */;
+			productName = SlideOverCard;
 		};
 		27C79CDE253C8D04003D0512 /* URLImage */ = {
 			isa = XCSwiftPackageProductDependency;
