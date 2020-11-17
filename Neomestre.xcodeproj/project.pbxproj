@@ -12,8 +12,8 @@
 		2720395825378C6D0010FEF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2720394325378C6D0010FEF7 /* Assets.xcassets */; };
 		2720396625378CA70010FEF7 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 2720396525378CA70010FEF7 /* CodeScanner */; };
 		2776E7F4253A0DB1001A3482 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2776E7F3253A0DB1001A3482 /* ContentView.swift */; };
+		278E8026256352D0000DE88D /* SlideOverCard in Frameworks */ = {isa = PBXBuildFile; productRef = 278E8025256352D0000DE88D /* SlideOverCard */; };
 		27938C1F253A42A20012BFF0 /* InicioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27938C1E253A42A20012BFF0 /* InicioView.swift */; };
-		27BEDA25255D66E300C449F9 /* SlideOverCard in Frameworks */ = {isa = PBXBuildFile; productRef = 27BEDA24255D66E300C449F9 /* SlideOverCard */; };
 		27C79CDF253C8D04003D0512 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 27C79CDE253C8D04003D0512 /* URLImage */; };
 		27C79D1C253CD171003D0512 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1B253CD171003D0512 /* SettingsView.swift */; };
 		27C79D20253CD6E2003D0512 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1F253CD6E2003D0512 /* DataLoader.swift */; };
@@ -41,7 +41,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27C79CDF253C8D04003D0512 /* URLImage in Frameworks */,
-				27BEDA25255D66E300C449F9 /* SlideOverCard in Frameworks */,
+				278E8026256352D0000DE88D /* SlideOverCard in Frameworks */,
 				2720396625378CA70010FEF7 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,7 +109,7 @@
 			packageProductDependencies = (
 				2720396525378CA70010FEF7 /* CodeScanner */,
 				27C79CDE253C8D04003D0512 /* URLImage */,
-				27BEDA24255D66E300C449F9 /* SlideOverCard */,
+				278E8025256352D0000DE88D /* SlideOverCard */,
 			);
 			productName = "Neomestre (iOS)";
 			productReference = 2720394825378C6D0010FEF7 /* Neomestre.app */;
@@ -141,7 +141,7 @@
 			packageReferences = (
 				2720396425378CA70010FEF7 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 				27C79CDD253C8D04003D0512 /* XCRemoteSwiftPackageReference "url-image" */,
-				27BEDA23255D66E300C449F9 /* XCRemoteSwiftPackageReference "SlideOverCard" */,
+				278E8024256352D0000DE88D /* XCRemoteSwiftPackageReference "SlideOverCard" */,
 			);
 			productRefGroup = 2720394925378C6D0010FEF7 /* Products */;
 			projectDirPath = "";
@@ -370,12 +370,12 @@
 				minimumVersion = 1.0.6;
 			};
 		};
-		27BEDA23255D66E300C449F9 /* XCRemoteSwiftPackageReference "SlideOverCard" */ = {
+		278E8024256352D0000DE88D /* XCRemoteSwiftPackageReference "SlideOverCard" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:joogps/SlideOverCard.git";
+			repositoryURL = "https://github.com/joogps/SlideOverCard";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.2.1;
 			};
 		};
 		27C79CDD253C8D04003D0512 /* XCRemoteSwiftPackageReference "url-image" */ = {
@@ -394,9 +394,9 @@
 			package = 2720396425378CA70010FEF7 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
 		};
-		27BEDA24255D66E300C449F9 /* SlideOverCard */ = {
+		278E8025256352D0000DE88D /* SlideOverCard */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 27BEDA23255D66E300C449F9 /* XCRemoteSwiftPackageReference "SlideOverCard" */;
+			package = 278E8024256352D0000DE88D /* XCRemoteSwiftPackageReference "SlideOverCard" */;
 			productName = SlideOverCard;
 		};
 		27C79CDE253C8D04003D0512 /* URLImage */ = {

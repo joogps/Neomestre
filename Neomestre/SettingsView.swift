@@ -26,18 +26,15 @@ struct SettingsView: View {
                             let turmas = resultado.turmas
                             
                             Menu {
+                                Text("Turmas")
                                 ForEach(turmas, id: \.cd_turma) { turma in
                                     Button(action: {
                                         appData.codigoResultadoAtual = resultado.cd_pessoa
                                         appData.codigoTurmaAtual = turma.cd_turma
                                     }) {
-                                        HStack {
-                                            Text(turma.ds_descricao.capitalized)
-                                            if appData.codigoResultadoAtual == pessoa.cd_pessoa &&
-                                                appData.codigoTurmaAtual == turma.cd_turma {
-                                                Image(systemName: "checkmark")
-                                            }
-                                        }
+                                        Label(turma.ds_descricao, systemImage: "checkmark")
+                                            .labelStyle(ClassLabel(isCurrentClass: appData.codigoResultadoAtual == pessoa.cd_pessoa &&
+                                                                                                        appData.codigoTurmaAtual == turma.cd_turma))
                                     }
                                 }
                             } label: {
@@ -95,8 +92,8 @@ struct SettingsView: View {
 
 struct UserRow: View {
     var pessoa: Pessoa
-    var turma = ""
-    var isCurrentUser = false
+    var turma: String
+    var isCurrentUser: Bool
     
     var body: some View {
         HStack {
@@ -115,6 +112,19 @@ struct UserRow: View {
             Spacer()
             if isCurrentUser {
                 Image(systemName: "checkmark.circle.fill").font(.system(size: 18, weight: .medium)).padding(10)
+            }
+        }
+    }
+}
+
+struct ClassLabel : LabelStyle {
+    var isCurrentClass: Bool
+    
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.title
+            if isCurrentClass {
+                configuration.icon
             }
         }
     }

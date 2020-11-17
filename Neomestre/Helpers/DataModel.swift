@@ -65,9 +65,23 @@ class DataModel: ObservableObject {
         UserDefaults.standard.set(codigoTurmaAtual, forKey: "turmaAtual")
     }
     
+    func getDisciplina(for material: MaterialApoio) -> DisciplinaMaterialApoio? {
+        if let resultado = resultadoAtual {
+            return resultado.arr_disciplinas_material_apoio.filter( { $0.cd_disciplina == material.cd_disciplina } )[0]
+        }
+        return nil
+    }
+    
     func getMateriais(for disciplina: DisciplinaMaterialApoio) -> [MaterialApoio]? {
         if let resultado = resultadoAtual {
             return resultado.arr_materiais_apoio.filter( { $0.cd_disciplina == disciplina.cd_disciplina } )
+        }
+        return nil
+    }
+    
+    func getArquivos(for material: MaterialApoio) -> [ArquivoMaterialApoio]? {
+        if let resultado = resultadoAtual {
+            return resultado.arr_materiais_apoio_arquivos.filter( { $0.cd_material_apoio == material.cd_material_apoio } )
         }
         return nil
     }
@@ -78,6 +92,7 @@ struct Resultado: Codable, Hashable {
     var turmas: [Turma]
     var arr_disciplinas_material_apoio: [DisciplinaMaterialApoio]
     var arr_materiais_apoio: [MaterialApoio]
+    var arr_materiais_apoio_arquivos: [ArquivoMaterialApoio]
     
     var pessoa: Pessoa {
         get { return pessoas[0] }
@@ -111,6 +126,22 @@ struct MaterialApoio: Codable, Hashable {
     var ds_titulo: String
     var me_descricao: String
     var dt_material: String
+    var cd_material_apoio: Int
+    var ds_link_material: String
+    
+    var formattedDate: String {
+        let isoFormatter = ISO8601DateFormatter()
+        let date = isoFormatter.date(from: dt_material)!
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        return dateFormatter.string(from: date)
+    }
+}
+
+struct ArquivoMaterialApoio: Codable, Hashable {
+    var cd_material_arquivo: Int
+    var ds_nome_arquivo: String
     var cd_material_apoio: Int
 }
 

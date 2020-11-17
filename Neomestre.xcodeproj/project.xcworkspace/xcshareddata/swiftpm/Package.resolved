@@ -12,11 +12,11 @@
       },
       {
         "package": "SlideOverCard",
-        "repositoryURL": "git@github.com:joogps/SlideOverCard.git",
+        "repositoryURL": "https://github.com/joogps/SlideOverCard",
         "state": {
           "branch": null,
-          "revision": "75ddd77826e22a73b23168430a601af3bc8eaef8",
-          "version": "1.0.0"
+          "revision": "793ffaf4e4b08997b566cfc828a0623bfde4d626",
+          "version": "1.2.1"
         }
       },
       {

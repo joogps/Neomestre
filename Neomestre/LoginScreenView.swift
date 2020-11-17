@@ -32,7 +32,7 @@ struct LoginScreenView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Image((colorScheme == .dark ? "Dark" : "Light") + "Icon")
+                /*Image((colorScheme == .dark ? "Dark" : "Light") + "Icon")
                     .resizable()
                     .frame(width: 120, height: 120)
                     .continuousCornerRadius(cornerRadius: 21.0)
@@ -41,6 +41,7 @@ struct LoginScreenView: View {
                 Text("Neomestre")
                     .font(.system(size: 42, weight: .bold))
                     .padding(10)
+                 */
                 
                 if !showingManual {
                     VStack (spacing: 10) {
@@ -77,8 +78,8 @@ struct LoginScreenView: View {
             
             VStack {
                 Spacer()
-                Text("versão beta 1.0")
-                    .font(.system(size: 14, weight: .light))
+                /*Text("versão beta 1.0")
+                    .font(.system(size: 14, weight: .light))*/
             }
         }.slideOverCard(isPresented: $showingScanner, content: { ScannerView(isPresented: $showingScanner, completion: self.handleScan) })
     }
@@ -205,10 +206,10 @@ struct ScannerView: View {
         VStack(spacing: .zero) {
             Text("Escanear QR code")
                 .font(.system(size: 28, weight: .bold))
-            Text("Entre no seu Unimestre pelo navegador e selecione \"Acesso aplicativo móvel\"")
-                .font(.system(size: 12))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal).padding(.top, 2)
+            Text("Scan the QR code displayed on your computer screen")
+                .font(.system(size: 13))
+                .padding(.horizontal)
+                .padding(.top, 2)
             Spacer()
             
             if !isCameraHidden {
@@ -216,22 +217,15 @@ struct ScannerView: View {
                     .cornerRadius(25)
                     .padding(.top, 20)
             } else {
-                ZStack {
-                    Color.black.cornerRadius(25)
-                        .padding(.top, 20)
-                }
+                Color.black.cornerRadius(25)
+                    .padding(.top, 20)
             }
-        }.frame(maxHeight: 420)
+        }.multilineTextAlignment(.center)
+        .frame(maxHeight: 420)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
                 isCameraHidden = false
             }
         }
-    }
-}
-
-struct LoginScreenView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginScreenView()
     }
 }
