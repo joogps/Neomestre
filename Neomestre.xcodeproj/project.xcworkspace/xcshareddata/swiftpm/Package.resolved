@@ -6,17 +6,8 @@
         "repositoryURL": "https://github.com/twostraws/CodeScanner.git",
         "state": {
           "branch": null,
-          "revision": "9d902dec616bd70b1a2a1b1e6d821c10c392ba9f",
-          "version": "1.0.6"
-        }
-      },
-      {
-        "package": "SlideOverCard",
-        "repositoryURL": "https://github.com/joogps/SlideOverCard",
-        "state": {
-          "branch": null,
-          "revision": "793ffaf4e4b08997b566cfc828a0623bfde4d626",
-          "version": "1.2.1"
+          "revision": "a2144ddaa7c43a6ee00873edd4cc7815ad97942f",
+          "version": "1.0.7"
         }
       },
       {
@@ -24,8 +15,8 @@
         "repositoryURL": "https://github.com/dmytro-anokhin/url-image.git",
         "state": {
           "branch": null,
-          "revision": "22eca5ee4f317e0283da75426849ee23f0516022",
-          "version": "0.9.19"
+          "revision": "c1a906515b0a440927b96204b778058871b22f23",
+          "version": "2.2.3"
         }
       }
     ]

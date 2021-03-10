@@ -21,7 +21,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need to scan QR codes.</string>
+	<string>É preciso acesso à câmera para escanear o QR code.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>É preciso acesso ao Face ID para a autenticação por biometria.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

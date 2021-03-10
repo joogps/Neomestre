@@ -8,31 +8,37 @@
 
 /* Begin PBXBuildFile section */
 		2720395425378C6D0010FEF7 /* NeomestreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720394125378C6C0010FEF7 /* NeomestreApp.swift */; };
-		2720395625378C6D0010FEF7 /* LoginScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720394225378C6C0010FEF7 /* LoginScreenView.swift */; };
+		2720395625378C6D0010FEF7 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720394225378C6C0010FEF7 /* SetupView.swift */; };
 		2720395825378C6D0010FEF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2720394325378C6D0010FEF7 /* Assets.xcassets */; };
-		2720396625378CA70010FEF7 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 2720396525378CA70010FEF7 /* CodeScanner */; };
+		275D689F25F5769000F3AB7C /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 275D689E25F5769000F3AB7C /* CodeScanner */; };
 		2776E7F4253A0DB1001A3482 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2776E7F3253A0DB1001A3482 /* ContentView.swift */; };
-		278E8026256352D0000DE88D /* SlideOverCard in Frameworks */ = {isa = PBXBuildFile; productRef = 278E8025256352D0000DE88D /* SlideOverCard */; };
 		27938C1F253A42A20012BFF0 /* InicioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27938C1E253A42A20012BFF0 /* InicioView.swift */; };
-		27C79CDF253C8D04003D0512 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 27C79CDE253C8D04003D0512 /* URLImage */; };
 		27C79D1C253CD171003D0512 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1B253CD171003D0512 /* SettingsView.swift */; };
 		27C79D20253CD6E2003D0512 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C79D1F253CD6E2003D0512 /* DataLoader.swift */; };
+		27CFF23725F5533F003C05D4 /* LAContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CFF23625F5533F003C05D4 /* LAContext.swift */; };
 		27D9438325424807004E82A0 /* MateriaisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D9438225424807004E82A0 /* MateriaisView.swift */; };
+		27E2551D25F57A0B00482C14 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 27E2551C25F57A0B00482C14 /* URLImage */; };
 		27E7B0F52538E45A00757A47 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E7B0F42538E45A00757A47 /* DataModel.swift */; };
+		27EE906D25F5A40700A7B739 /* SlideOverCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EE906325F5A3D200A7B739 /* SlideOverCard.swift */; };
+		27EE907125F5A44F00A7B739 /* IrregularGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EE907025F5A44F00A7B739 /* IrregularGradient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2720394125378C6C0010FEF7 /* NeomestreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeomestreApp.swift; sourceTree = "<group>"; };
-		2720394225378C6C0010FEF7 /* LoginScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenView.swift; sourceTree = "<group>"; };
+		2720394225378C6C0010FEF7 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		2720394325378C6D0010FEF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2720394825378C6D0010FEF7 /* Neomestre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neomestre.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2720394825378C6D0010FEF7 /* neomestre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = neomestre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2720394B25378C6D0010FEF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2722890025F4733900A8A541 /* Neomestre.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Neomestre.entitlements; sourceTree = "<group>"; };
 		2776E7F3253A0DB1001A3482 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		27938C1E253A42A20012BFF0 /* InicioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InicioView.swift; sourceTree = "<group>"; };
 		27C79D1B253CD171003D0512 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		27C79D1F253CD6E2003D0512 /* DataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
+		27CFF23625F5533F003C05D4 /* LAContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAContext.swift; sourceTree = "<group>"; };
 		27D9438225424807004E82A0 /* MateriaisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MateriaisView.swift; sourceTree = "<group>"; };
 		27E7B0F42538E45A00757A47 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		27EE906325F5A3D200A7B739 /* SlideOverCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideOverCard.swift; sourceTree = "<group>"; };
+		27EE907025F5A44F00A7B739 /* IrregularGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IrregularGradient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,9 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27C79CDF253C8D04003D0512 /* URLImage in Frameworks */,
-				278E8026256352D0000DE88D /* SlideOverCard in Frameworks */,
-				2720396625378CA70010FEF7 /* CodeScanner in Frameworks */,
+				27E2551D25F57A0B00482C14 /* URLImage in Frameworks */,
+				275D689F25F5769000F3AB7C /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,8 +57,10 @@
 		2720393B25378C6C0010FEF7 = {
 			isa = PBXGroup;
 			children = (
+				2722890025F4733900A8A541 /* Neomestre.entitlements */,
 				2720394025378C6C0010FEF7 /* Neomestre */,
 				2720394925378C6D0010FEF7 /* Products */,
+				27CFF23125F551BF003C05D4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,10 +70,12 @@
 				2720394125378C6C0010FEF7 /* NeomestreApp.swift */,
 				2776E7F3253A0DB1001A3482 /* ContentView.swift */,
 				27D9438225424807004E82A0 /* MateriaisView.swift */,
-				2720394225378C6C0010FEF7 /* LoginScreenView.swift */,
+				2720394225378C6C0010FEF7 /* SetupView.swift */,
 				27938C1E253A42A20012BFF0 /* InicioView.swift */,
 				27C79D1B253CD171003D0512 /* SettingsView.swift */,
 				27C79D23253CD6F8003D0512 /* Helpers */,
+				27EE906225F5A3D200A7B739 /* SlideOverCard */,
+				27EE906F25F5A44F00A7B739 /* IrregularGradient */,
 				2720394325378C6D0010FEF7 /* Assets.xcassets */,
 				2720394B25378C6D0010FEF7 /* Info.plist */,
 			);
@@ -76,7 +85,7 @@
 		2720394925378C6D0010FEF7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2720394825378C6D0010FEF7 /* Neomestre.app */,
+				2720394825378C6D0010FEF7 /* neomestre.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,8 +95,33 @@
 			children = (
 				27E7B0F42538E45A00757A47 /* DataModel.swift */,
 				27C79D1F253CD6E2003D0512 /* DataLoader.swift */,
+				27CFF23625F5533F003C05D4 /* LAContext.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		27CFF23125F551BF003C05D4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		27EE906225F5A3D200A7B739 /* SlideOverCard */ = {
+			isa = PBXGroup;
+			children = (
+				27EE906325F5A3D200A7B739 /* SlideOverCard.swift */,
+			);
+			name = SlideOverCard;
+			path = SlideOverCard/Sources/SlideOverCard;
+			sourceTree = "<group>";
+		};
+		27EE906F25F5A44F00A7B739 /* IrregularGradient */ = {
+			isa = PBXGroup;
+			children = (
+				27EE907025F5A44F00A7B739 /* IrregularGradient.swift */,
+			);
+			path = IrregularGradient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,12 +141,11 @@
 			);
 			name = "Neomestre (iOS)";
 			packageProductDependencies = (
-				2720396525378CA70010FEF7 /* CodeScanner */,
-				27C79CDE253C8D04003D0512 /* URLImage */,
-				278E8025256352D0000DE88D /* SlideOverCard */,
+				275D689E25F5769000F3AB7C /* CodeScanner */,
+				27E2551C25F57A0B00482C14 /* URLImage */,
 			);
 			productName = "Neomestre (iOS)";
-			productReference = 2720394825378C6D0010FEF7 /* Neomestre.app */;
+			productReference = 2720394825378C6D0010FEF7 /* neomestre.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -139,9 +172,8 @@
 			);
 			mainGroup = 2720393B25378C6C0010FEF7;
 			packageReferences = (
-				2720396425378CA70010FEF7 /* XCRemoteSwiftPackageReference "CodeScanner" */,
-				27C79CDD253C8D04003D0512 /* XCRemoteSwiftPackageReference "url-image" */,
-				278E8024256352D0000DE88D /* XCRemoteSwiftPackageReference "SlideOverCard" */,
+				275D689D25F5769000F3AB7C /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				27E2551B25F57A0B00482C14 /* XCRemoteSwiftPackageReference "url-image" */,
 			);
 			productRefGroup = 2720394925378C6D0010FEF7 /* Products */;
 			projectDirPath = "";
@@ -170,12 +202,15 @@
 			files = (
 				27D9438325424807004E82A0 /* MateriaisView.swift in Sources */,
 				27938C1F253A42A20012BFF0 /* InicioView.swift in Sources */,
-				2720395625378C6D0010FEF7 /* LoginScreenView.swift in Sources */,
+				2720395625378C6D0010FEF7 /* SetupView.swift in Sources */,
 				27C79D20253CD6E2003D0512 /* DataLoader.swift in Sources */,
+				27CFF23725F5533F003C05D4 /* LAContext.swift in Sources */,
 				2720395425378C6D0010FEF7 /* NeomestreApp.swift in Sources */,
 				2776E7F4253A0DB1001A3482 /* ContentView.swift in Sources */,
 				27C79D1C253CD171003D0512 /* SettingsView.swift in Sources */,
+				27EE907125F5A44F00A7B739 /* IrregularGradient.swift in Sources */,
 				27E7B0F52538E45A00757A47 /* DataModel.swift in Sources */,
+				27EE906D25F5A40700A7B739 /* SlideOverCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,8 +333,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Neomestre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X9NAXV39HG;
+				DEVELOPMENT_TEAM = V9F4J6KX54;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Neomestre/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -307,8 +343,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.joogps.Neomestre;
-				PRODUCT_NAME = Neomestre;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rcsbnu.Neomestre;
+				PRODUCT_NAME = neomestre;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -320,8 +356,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Neomestre.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X9NAXV39HG;
+				DEVELOPMENT_TEAM = V9F4J6KX54;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Neomestre/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -329,8 +366,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.joogps.Neomestre;
-				PRODUCT_NAME = Neomestre;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rcsbnu.Neomestre;
+				PRODUCT_NAME = neomestre;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -362,46 +399,33 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2720396425378CA70010FEF7 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+		275D689D25F5769000F3AB7C /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/twostraws/CodeScanner.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.6;
+				minimumVersion = 1.0.7;
 			};
 		};
-		278E8024256352D0000DE88D /* XCRemoteSwiftPackageReference "SlideOverCard" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/joogps/SlideOverCard";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.1;
-			};
-		};
-		27C79CDD253C8D04003D0512 /* XCRemoteSwiftPackageReference "url-image" */ = {
+		27E2551B25F57A0B00482C14 /* XCRemoteSwiftPackageReference "url-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.19;
+				minimumVersion = 2.2.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2720396525378CA70010FEF7 /* CodeScanner */ = {
+		275D689E25F5769000F3AB7C /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2720396425378CA70010FEF7 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			package = 275D689D25F5769000F3AB7C /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
 		};
-		278E8025256352D0000DE88D /* SlideOverCard */ = {
+		27E2551C25F57A0B00482C14 /* URLImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 278E8024256352D0000DE88D /* XCRemoteSwiftPackageReference "SlideOverCard" */;
-			productName = SlideOverCard;
-		};
-		27C79CDE253C8D04003D0512 /* URLImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 27C79CDD253C8D04003D0512 /* XCRemoteSwiftPackageReference "url-image" */;
+			package = 27E2551B25F57A0B00482C14 /* XCRemoteSwiftPackageReference "url-image" */;
 			productName = URLImage;
 		};
 /* End XCSwiftPackageProductDependency section */

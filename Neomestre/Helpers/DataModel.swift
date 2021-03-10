@@ -8,10 +8,43 @@
 import Foundation
 
 class DataModel: ObservableObject {
-    @Published var resultados: Array<Resultado> = []
+    @Published var settings: Settings = Settings() {
+        didSet {
+            do {
+                let encodedSettings = try JSONEncoder().encode(settings)
+                UserDefaults.standard.set(encodedSettings, forKey: "settings")
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
     
-    @Published var codigoResultadoAtual: Int? = UserDefaults.standard.integer(forKey: "pessoaAtual")
-    @Published var codigoTurmaAtual: Int? = UserDefaults.standard.integer(forKey: "turmaAtual")
+    @Published var resultados: Array<Resultado> = [] {
+        didSet {
+            do {
+                let encoder = JSONEncoder()
+                let encodedResultados = try encoder.encode(resultados)
+                UserDefaults.standard.set(encodedResultados, forKey: "resultados")
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    var configured: Bool {
+        return resultados.count > 0
+    }
+    
+    @Published var codigoResultadoAtual: Int? = UserDefaults.standard.integer(forKey: "pessoaAtual") {
+        didSet {
+            UserDefaults.standard.set(codigoResultadoAtual, forKey: "pessoaAtual")
+        }
+    }
+    @Published var codigoTurmaAtual: Int? = UserDefaults.standard.integer(forKey: "turmaAtual") {
+        didSet {
+            UserDefaults.standard.set(codigoTurmaAtual, forKey: "turmaAtual")
+        }
+    }
     
     var resultadoAtual: Resultado? {
         if let resultado = resultados.first(where: { $0.cd_pessoa == codigoResultadoAtual }) {
@@ -42,6 +75,14 @@ class DataModel: ObservableObject {
     }
     
     init() {
+        if let data = UserDefaults.standard.data(forKey: "settings") {
+            do {
+                settings = try JSONDecoder().decode(Settings.self, from: data)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        
         if let data = UserDefaults.standard.data(forKey: "resultados") {
             do {
                 let decoder = JSONDecoder()
@@ -52,22 +93,9 @@ class DataModel: ObservableObject {
         }
     }
     
-    func syncData() {
-        do {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(resultados)
-            UserDefaults.standard.set(data, forKey: "resultados")
-        } catch let error {
-            print(error.localizedDescription)
-        }
-        
-        UserDefaults.standard.set(codigoResultadoAtual, forKey: "pessoaAtual")
-        UserDefaults.standard.set(codigoTurmaAtual, forKey: "turmaAtual")
-    }
-    
-    func getDisciplina(for material: MaterialApoio) -> DisciplinaMaterialApoio? {
+    func getDisciplina(by code: Int) -> DisciplinaMaterialApoio? {
         if let resultado = resultadoAtual {
-            return resultado.arr_disciplinas_material_apoio.filter( { $0.cd_disciplina == material.cd_disciplina } )[0]
+            return resultado.arr_disciplinas_material_apoio.filter( { $0.cd_disciplina == code } )[0]
         }
         return nil
     }
@@ -87,12 +115,25 @@ class DataModel: ObservableObject {
     }
 }
 
+struct Settings: Codable {
+    var biometrics = false
+}
+
+
 struct Resultado: Codable, Hashable {
     var pessoas: [Pessoa]
     var turmas: [Turma]
     var arr_disciplinas_material_apoio: [DisciplinaMaterialApoio]
     var arr_materiais_apoio: [MaterialApoio]
     var arr_materiais_apoio_arquivos: [ArquivoMaterialApoio]
+    
+    mutating func sortDisciplinas() {
+        arr_disciplinas_material_apoio.sort(by: { $0.ds_disciplina > $1.ds_disciplina})
+    }
+    
+    mutating func sortMateriais() {
+        arr_materiais_apoio.sort(by: { $0.date > $1.date})
+    }
     
     var pessoa: Pessoa {
         get { return pessoas[0] }
@@ -127,12 +168,14 @@ struct MaterialApoio: Codable, Hashable {
     var me_descricao: String
     var dt_material: String
     var cd_material_apoio: Int
-    var ds_link_material: String
+    var ds_link_material: String?
     
-    var formattedDate: String {
+    var date: Date {
         let isoFormatter = ISO8601DateFormatter()
-        let date = isoFormatter.date(from: dt_material)!
+        return isoFormatter.date(from: dt_material)!
+    }
         
+    var formattedDate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         return dateFormatter.string(from: date)

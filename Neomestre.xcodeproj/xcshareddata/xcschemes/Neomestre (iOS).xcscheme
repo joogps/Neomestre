@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2720394725378C6D0010FEF7"
-               BuildableName = "Neomestre.app"
+               BuildableName = "neomestre.app"
                BlueprintName = "Neomestre (iOS)"
                ReferencedContainer = "container:Neomestre.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2720394725378C6D0010FEF7"
-            BuildableName = "Neomestre.app"
+            BuildableName = "neomestre.app"
             BlueprintName = "Neomestre (iOS)"
             ReferencedContainer = "container:Neomestre.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2720394725378C6D0010FEF7"
-            BuildableName = "Neomestre.app"
+            BuildableName = "neomestre.app"
             BlueprintName = "Neomestre (iOS)"
             ReferencedContainer = "container:Neomestre.xcodeproj">
          </BuildableReference>

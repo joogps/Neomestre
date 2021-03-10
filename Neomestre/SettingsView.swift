@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
-import URLImage
+import LocalAuthentication
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject var appData: DataModel
     
-    @State private var showingLogin = false
     @State private var showingWipeAlert = false
+    
+    @State private var setupScreen: SetupScreens? = nil
     
     var body: some View {
         NavigationView {
@@ -34,7 +35,7 @@ struct SettingsView: View {
                                     }) {
                                         Label(turma.ds_descricao, systemImage: "checkmark")
                                             .labelStyle(ClassLabel(isCurrentClass: appData.codigoResultadoAtual == pessoa.cd_pessoa &&
-                                                                                                        appData.codigoTurmaAtual == turma.cd_turma))
+                                                                                   appData.codigoTurmaAtual == turma.cd_turma))
                                     }
                                 }
                             } label: {
@@ -44,9 +45,14 @@ struct SettingsView: View {
                         }.onDelete(perform: delete)
                     }
                     
-                    Button(action: { showingLogin = true }) {
+                    Button(action: { setupScreen = .login }) {
                         Label("Adicionar usuário", systemImage: "plus")
                     }
+                }
+                
+                Section (header: Text("Segurança").padding(.top, 10), footer: Text("A biometria adiciona uma camada extra de segurança ao seu acesso ao neomestre. Você pode desativá-la a qualquer momento.").padding(.horizontal)) {
+                    Toggle(LAContext().biometricType == .none ? "Biometria" : "Desbloqueio por \(LAContext().biometricType == .faceID ? "Face ID" : "Touch ID")", isOn: $appData.settings.biometrics)
+                        .disabled(LAContext().biometricType == .none)
                 }
                 
                 Section (header: Text("Geral").padding(.top, 10)) {
@@ -63,7 +69,7 @@ struct SettingsView: View {
             .navigationBarItems(trailing: Button("OK", action: {
                 presentationMode.wrappedValue.dismiss()
             }))
-        }.sheet(isPresented: $showingLogin, content: { LoginScreenView() })
+        }.displaySetup(setupScreen: $setupScreen, appData: appData)
         .alert(isPresented: $showingWipeAlert) {
             Alert(title: Text("Você tem certeza?"),
                   message: Text("Essa ação apagará todos os dados de usuário."),
@@ -71,7 +77,7 @@ struct SettingsView: View {
                   secondaryButton: .destructive(Text("Apagar")) {
                     presentationMode.wrappedValue.dismiss()
                     appData.resultados = []
-                    appData.syncData()
+                    appData.settings = Settings()
                   }
             )
         }
@@ -86,7 +92,6 @@ struct SettingsView: View {
             appData.codigoResultadoAtual = appData.resultados.first?.cd_pessoa
             appData.codigoTurmaAtual = appData.resultadoAtual!.turmas.last?.cd_turma
         }
-        appData.syncData()
     }
 }
 
@@ -97,12 +102,7 @@ struct UserRow: View {
     
     var body: some View {
         HStack {
-            URLImage(URL(string: "https://app.unimestre.com/mobile/v1.0/pessoa-imagem/"+String(pessoa.cd_pessoa))!, placeholder: Image(systemName: "person.crop.circle").resizable()) { proxy in
-                proxy.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .clipShape(Circle())
-            }.frame(width: 60, height: 60).padding(10)
+            UserPicture(code: pessoa.cd_pessoa).frame(width: 60, height: 60).padding(10)
             
             VStack(alignment: .leading) {
                 Text(pessoa.ds_nome.capitalized).foregroundColor(Color.primary).font(.system(size: 16, weight: .medium))

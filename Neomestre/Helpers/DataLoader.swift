@@ -9,11 +9,13 @@ import Foundation
 
 struct DataLoader {
     static func login(json: Data, completion: @escaping (Result<Resultado, Error>) -> Void) {
+        print("Logging in...")
+        
         let url = URL(string: "https://app.unimestre.com/mobile/v3.0/login")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("\(String(describing: json.count))", forHTTPHeaderField: "Content-Length")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("\(String(describing: json.count))", forHTTPHeaderField: "Content-Length")
         request.httpBody = json
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -36,6 +38,7 @@ struct DataLoader {
                 }
             }
         }
+        
         task.resume()
     }
     
@@ -63,15 +66,18 @@ struct DataLoader {
                 }
             }
         }
+        
         task.resume()
     }
     
     static func handle(data: Data) -> Result<Resultado, Error> {
         do {
             let decoder = JSONDecoder()
-            let response = try decoder.decode(Response.self, from: data)
+            var response = try decoder.decode(Response.self, from: data)
             
             if response.sucesso {
+                response.resultado.sortDisciplinas()
+                response.resultado.sortMateriais()
                 return .success(response.resultado)
             } else {
                 return .failure(RequestError.badRequest("The request wasn't successful"))
