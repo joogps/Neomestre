@@ -15,8 +15,15 @@ struct MateriaisView: View {
     
     @State var showingFilter = false
     
+    @State var filterSearch: String = ""
     @State var filterDisciplina: Int?
     @State var filterDate: Date?
+    
+    let filterDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter
+    }()
     
     var filtering: Bool {
         return filterDisciplina != nil || filterDate != nil
@@ -32,7 +39,31 @@ struct MateriaisView: View {
     var body: some View {
         NavigationView {
             ScrollView {
+                HStack {
+                    Image(systemName: "magnifyingglass").foregroundColor(Color(.systemGray2))
+                    TextField("Procurar", text: $filterSearch)
+                }.padding(8)
+                .background(Color(.systemGray6).continuousCornerRadius(12))
+                .padding(.horizontal)
+                
                 if materiais != nil {
+                    HStack(alignment: .top) {
+                        Text("\(materiais!.count) materiais")
+                        Spacer()
+                        
+                        VStack(alignment: .trailing) {
+                            if filterDisciplina != nil {
+                                Text("Disciplina: ").bold() + Text((appData.getDisciplina(by: filterDisciplina!)?.ds_disciplina.capitalized)!)
+                            }
+                            if filterDate != nil {
+                                Text("Data: ").bold() + Text(filterDate!, formatter: filterDateFormatter)
+                            }
+                        }
+                    }.font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    
                     LazyVStack (alignment: .leading, spacing: 10) {
                         ForEach(materiais!, id: \.cd_material_apoio) { material in
                             MaterialRow(material: material, disciplina: appData.getDisciplina(by: material.cd_disciplina)!, animation: animation).onTapGesture {
@@ -41,7 +72,7 @@ struct MateriaisView: View {
                                 }
                             }
                         }
-                    }.padding()
+                    }.padding([.horizontal, .bottom])
                 }
             }.navigationTitle("materiais")
             .navigationBarItems(trailing: Button(action: {
@@ -60,9 +91,16 @@ struct MateriaisView: View {
             if filterDisciplina != nil {
                 materiais = materiais.filter({ $0.cd_disciplina == filterDisciplina })
             }
+            
             if filterDate != nil {
                 materiais = materiais.filter({  Calendar.current.isDate($0.date, equalTo: filterDate!, toGranularity: .day) })
             }
+            
+            if filterSearch != "" {
+                let options: NSString.CompareOptions =  [.diacriticInsensitive, .caseInsensitive]
+                materiais = materiais.filter({ $0.ds_titulo.folding(options: options, locale: .current).contains(filterSearch.folding(options: options, locale: .current)) })
+            }
+            
             return materiais
         }
         return nil
@@ -148,12 +186,19 @@ struct MaterialRow: View {
         HStack {
             VStack (alignment: .leading) {
                 Text(material.ds_titulo).font(.system(size: 18, weight: .semibold))
-                Label(disciplina.ds_disciplina, systemImage: "tag")
-                Label(material.formattedDate, systemImage: "calendar")
+                
+                HStack(spacing: 4) {
+                    Label(disciplina.ds_disciplina.capitalized, systemImage: "tag")
+                        .padding(8)
+                        .background(Color.accentColor.opacity(0.1).continuousCornerRadius(12))
+                    Label(material.formattedDate, systemImage: "calendar")
+                        .padding(8)
+                        .background(Color.accentColor.hueRotation(.init(degrees: 90)).opacity(0.1).continuousCornerRadius(12))
+                }.font(Font.system(size: 12, weight: .semibold))
+                .padding(.top, 2)
             }
             Spacer()
-        }
-        .padding()
+        }.padding(15)
         .background(Color(.systemGray6).matchedGeometryEffect(id: "Background \(material.cd_material_apoio)", in: animation))
         .continuousCornerRadius(16.0)
     }

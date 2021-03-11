@@ -8,26 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    init() {
+        UITabBarItem.appearance().setTitleTextAttributes([.font : UIFont.systemFont(ofSize: 11, weight: .semibold)], for: [])
+    }
+    
     var body: some View {
         TabView {
             InicioView().tabItem {
                 Image(systemName: "house")
-                Text("Início")
+                Text("início")
             }
             
             Text("Boletim").tabItem {
                 Image(systemName: "list.bullet.rectangle")
-                Text("Boletim")
+                Text("boletim")
             }
             
             MateriaisView().tabItem {
                 Image(systemName: "square.and.arrow.down")
-                Text("Materiais")
+                Text("materiais")
             }
             
             Text("Recados").tabItem {
                 Image(systemName: "message")
-                Text("Recados")
+                Text("recados")
             }
         }
     }
