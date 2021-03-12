@@ -15,7 +15,7 @@ struct SettingsView: View {
     
     @State private var showingWipeAlert = false
     
-    @State private var setupScreen: SetupScreens? = nil
+    @State private var setupScreen: SetupScreen? = nil
     
     var body: some View {
         NavigationView {
@@ -65,17 +65,18 @@ struct SettingsView: View {
             }
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Configurações")
+            .navigationTitle("configurações")
             .navigationBarItems(trailing: Button("OK", action: {
                 presentationMode.wrappedValue.dismiss()
             }))
         }.displaySetup(setupScreen: $setupScreen, appData: appData)
         .alert(isPresented: $showingWipeAlert) {
             Alert(title: Text("Você tem certeza?"),
-                  message: Text("Essa ação apagará todos os dados de usuário."),
+                  message: Text("Essa ação apagará todos os dados."),
                   primaryButton: .default(Text("Cancelar")),
                   secondaryButton: .destructive(Text("Apagar")) {
                     presentationMode.wrappedValue.dismiss()
+                    
                     appData.resultados = []
                     appData.settings = Settings()
                   }
@@ -85,12 +86,14 @@ struct SettingsView: View {
     
     func delete(offsets: IndexSet) {
         if appData.resultados.count == 1 {
-            presentationMode.wrappedValue.dismiss()
-        }
-        appData.resultados.remove(atOffsets: offsets)
-        if appData.resultadoAtual == nil && appData.resultados.count > 0 {
-            appData.codigoResultadoAtual = appData.resultados.first?.cd_pessoa
-            appData.codigoTurmaAtual = appData.resultadoAtual!.turmas.last?.cd_turma
+            showingWipeAlert = true
+        } else {
+            appData.resultados.remove(atOffsets: offsets)
+            
+            if appData.resultadoAtual == nil && appData.configured {
+                appData.codigoResultadoAtual = appData.resultados.first?.cd_pessoa
+                appData.codigoTurmaAtual = appData.resultadoAtual!.turmas.last?.cd_turma
+            }
         }
     }
 }

@@ -36,56 +36,6 @@ struct MateriaisView: View {
         UIDatePicker.appearance().backgroundColor = UIColor(Color.accentColor).withAlphaComponent(0.02)
     }
     
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                HStack {
-                    Image(systemName: "magnifyingglass").foregroundColor(Color(.systemGray2))
-                    TextField("Procurar", text: $filterSearch)
-                }.padding(8)
-                .background(Color(.systemGray6).continuousCornerRadius(12))
-                .padding(.horizontal)
-                
-                if materiais != nil {
-                    HStack(alignment: .top) {
-                        Text("\(materiais!.count) materiais")
-                        Spacer()
-                        
-                        VStack(alignment: .trailing) {
-                            if filterDisciplina != nil {
-                                Text("Disciplina: ").bold() + Text((appData.getDisciplina(by: filterDisciplina!)?.ds_disciplina.capitalized)!)
-                            }
-                            if filterDate != nil {
-                                Text("Data: ").bold() + Text(filterDate!, formatter: filterDateFormatter)
-                            }
-                        }
-                    }.font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    
-                    LazyVStack (alignment: .leading, spacing: 10) {
-                        ForEach(materiais!, id: \.cd_material_apoio) { material in
-                            MaterialRow(material: material, disciplina: appData.getDisciplina(by: material.cd_disciplina)!, animation: animation).onTapGesture {
-                                withAnimation {
-                                    self.currentMaterial = material
-                                }
-                            }
-                        }
-                    }.padding([.horizontal, .bottom])
-                }
-            }.navigationTitle("materiais")
-            .navigationBarItems(trailing: Button(action: {
-                SOCManager.present(isPresented: $showingFilter, content: {
-                    FilterView(filterDisciplina: $filterDisciplina, filterDate: $filterDate)
-                        .environmentObject(appData)
-                })
-            }, label: {
-                Image(systemName: "line.horizontal.3.decrease.circle\(filtering ? ".fill" : "")").font(.system(size: 22, weight: .regular))
-            }))
-        }
-    }
-    
     var materiais: [MaterialApoio]? {
         if var materiais = appData.materiaisAtuais {
             if filterDisciplina != nil {
@@ -104,6 +54,94 @@ struct MateriaisView: View {
             return materiais
         }
         return nil
+    }
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                search
+                
+                if materiais != nil {
+                    header
+                    list
+                }
+            }.navigationTitle("materiais")
+            .navigationBarItems(trailing: Button(action: {
+                SOCManager.present(isPresented: $showingFilter, content: {
+                    FilterView(filterDisciplina: $filterDisciplina, filterDate: $filterDate)
+                        .environmentObject(appData)
+                })
+            }, label: {
+                Image(systemName: "line.horizontal.3.decrease.circle\(filtering ? ".fill" : "")").font(.system(size: 22, weight: .regular))
+            }))
+        }
+    }
+    
+    var search: some View {
+        HStack {
+            Image(systemName: "magnifyingglass").foregroundColor(Color(.systemGray2))
+            TextField("Procurar", text: $filterSearch)
+        }.padding(8)
+        .background(Color(.systemGray6).continuousCornerRadius(12))
+        .padding(.horizontal)
+    }
+    
+    var header: some View {
+        HStack(alignment: .top) {
+            Text("\(materiais!.count) materiais")
+            Spacer()
+            
+            VStack(alignment: .trailing) {
+                if filterDisciplina != nil {
+                    Text("Disciplina: ").fontWeight(.medium) + Text((appData.getDisciplina(by: filterDisciplina!)?.formattedName)!)
+                }
+                if filterDate != nil {
+                    Text("Data: ").fontWeight(.medium) + Text(filterDate!, formatter: filterDateFormatter)
+                }
+            }
+        }.font(.subheadline)
+        .foregroundColor(.secondary)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+    }
+    
+    var list: some View {
+        LazyVStack (alignment: .leading, spacing: 10) {
+            ForEach(materiais!, id: \.cd_material_apoio) { material in
+                MaterialRow(material: material, disciplina: appData.getDisciplina(by: material.cd_disciplina)!, animation: animation).onTapGesture {
+                    self.currentMaterial = material
+                }
+            }
+        }.padding([.horizontal, .bottom])
+    }
+}
+
+struct MaterialRow: View {
+    let material: MaterialApoio
+    let disciplina: DisciplinaMaterialApoio
+    
+    var animation: Namespace.ID
+    
+    var body: some View {
+        HStack {
+            VStack (alignment: .leading) {
+                Text(material.ds_titulo).font(.system(size: 18, weight: .semibold))
+                
+                HStack(spacing: 4) {
+                    Label(disciplina.formattedName, systemImage: "tag")
+                        .padding(8)
+                        .background(Color.accentColor.opacity(0.1).continuousCornerRadius(8))
+                    Label(material.formattedDate, systemImage: "calendar")
+                        .padding(8)
+                        .background(Color.accentColor.hueRotation(.init(degrees: 90)).opacity(0.1).continuousCornerRadius(8))
+                }.lineLimit(1)
+                .font(Font.system(size: 12, weight: .semibold))
+                .padding(.top, 2)
+            }
+            Spacer()
+        }.padding(15)
+        .background(Color(.systemGray6).matchedGeometryEffect(id: "Background \(material.cd_material_apoio)", in: animation))
+        .continuousCornerRadius(16.0)
     }
 }
 
@@ -135,7 +173,7 @@ struct FilterView: View {
                             filterDisciplina = disciplina.cd_disciplina == filterDisciplina ? nil : disciplina.cd_disciplina
                     }, label: {
                         HStack {
-                            Text(disciplina.ds_disciplina.capitalized)
+                            Text(disciplina.formattedName)
                             if disciplina.cd_disciplina == filterDisciplina {
                                 Image(systemName: "checkmark")
                             }
@@ -174,34 +212,6 @@ struct FilterView: View {
         .continuousCornerRadius(15)
     }
     
-}
-
-struct MaterialRow: View {
-    let material: MaterialApoio
-    let disciplina: DisciplinaMaterialApoio
-    
-    var animation: Namespace.ID
-    
-    var body: some View {
-        HStack {
-            VStack (alignment: .leading) {
-                Text(material.ds_titulo).font(.system(size: 18, weight: .semibold))
-                
-                HStack(spacing: 4) {
-                    Label(disciplina.ds_disciplina.capitalized, systemImage: "tag")
-                        .padding(8)
-                        .background(Color.accentColor.opacity(0.1).continuousCornerRadius(12))
-                    Label(material.formattedDate, systemImage: "calendar")
-                        .padding(8)
-                        .background(Color.accentColor.hueRotation(.init(degrees: 90)).opacity(0.1).continuousCornerRadius(12))
-                }.font(Font.system(size: 12, weight: .semibold))
-                .padding(.top, 2)
-            }
-            Spacer()
-        }.padding(15)
-        .background(Color(.systemGray6).matchedGeometryEffect(id: "Background \(material.cd_material_apoio)", in: animation))
-        .continuousCornerRadius(16.0)
-    }
 }
 
 struct MateriaisView_Previews: PreviewProvider {

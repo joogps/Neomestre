@@ -14,14 +14,14 @@ struct NeomestreApp: App {
     
     @Environment(\.colorScheme) var colorScheme
     
-    @State var setupScreen: SetupScreens? = nil
+    @State var setupScreen: SetupScreen? = nil
     
     @State var locked = false
     
     var body: some Scene {
         WindowGroup {
             Group {
-                if !appData.configured || locked {
+                if locked || !appData.configured {
                     ZStack {
                         IrregularGradientView(colors: [Color(#colorLiteral(red: 0.9960784314, green: 0.7960784314, blue: 0.1607843137, alpha: 1)), Color(#colorLiteral(red: 0.6588235294, green: 0.8117647059, blue: 0.2705882353, alpha: 1)), Color(#colorLiteral(red: 0.5058823529, green: 0.7294117647, blue: 0.462745098, alpha: 1)), Color(#colorLiteral(red: 0.3529411765, green: 0.6470588235, blue: 0.6588235294, alpha: 1)), Color(#colorLiteral(red: 0.3201098442, green: 0.3626264334, blue: 0.8252855539, alpha: 1))], backgroundColor: Color(#colorLiteral(red: 0.3201098442, green: 0.3626264334, blue: 0.8252855539, alpha: 1)))
                             .ignoresSafeArea()
@@ -41,13 +41,12 @@ struct NeomestreApp: App {
                         }
                     }
                 } else {
-                    ContentView().environmentObject(appData)
+                    ContentView()
+                        .environmentObject(appData)
                 }
             }.displaySetup(setupScreen: $setupScreen, appData: appData)
             .onAppear {
-                toggleSetup()
-                
-                if (appData.settings.biometrics) {
+                if (appData.configured && appData.settings.biometrics) {
                     locked = true
                     authenticate()
                 }
@@ -69,9 +68,7 @@ struct NeomestreApp: App {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
                 DispatchQueue.main.async {
                     if success {
-                        withAnimation {
-                            locked = false
-                        }
+                        locked = false
                     }
                 }
             }

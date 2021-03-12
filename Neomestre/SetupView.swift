@@ -10,7 +10,7 @@ import LocalAuthentication
 
 import CodeScanner
 
-enum SetupScreens: Identifiable {
+enum SetupScreen: Identifiable {
     var id: Int { self.hashValue }
 
     case welcome
@@ -27,7 +27,10 @@ struct SetupView: View {
     
     @EnvironmentObject var appData: DataModel
     
-    @Binding var setupScreen: SetupScreens?
+    @Binding var setupScreen: SetupScreen?
+    
+    @State var setupError: SetupError?
+    @State var setupMethod: SetupMethod?
     
     @State var username = ""
     @State var password = ""
@@ -115,16 +118,15 @@ struct SetupView: View {
             Spacer()
             
             if !isScannerHidden {
-                CodeScannerView(codeTypes: [.qr], completion: handleScan)
-                    .continuousCornerRadius(scannerAnimation*20)
-                    .scaleEffect(CGSize(width: 1, height: scannerAnimation), anchor: .center)
-                    .brightness(Double(scannerAnimation)-1)
-                    .padding(.top, 15)
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                            scannerAnimation = 1
-                        }
+                CodeScannerView(codeTypes: [.qr], completion: handleScan).continuousCornerRadius(scannerAnimation*20)
+                .scaleEffect(CGSize(width: 1, height: scannerAnimation), anchor: .center)
+                .brightness(Double(scannerAnimation)-1)
+                .padding(.top, 15)
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                        scannerAnimation = 1
                     }
+                }
             }
             
             SetupButton(title: "voltar", systemImage: "arrow.left", action: {
@@ -153,8 +155,7 @@ struct SetupView: View {
             SecureField("senha", text: $password).modifier(LoginTextFieldStyle())
             TextField("código da instituição", text: $code).keyboardType(.numberPad).modifier(LoginTextFieldStyle())
             
-            SetupButton(title: "entrar", action: {
-                setupScreen = .login
+            SetupButton(title: "entrar", primary: true, action: {
                 handleManual(username: username, password: password, code: code)
             }).padding(.top, 12)
             .disabled(username.isEmpty || password.isEmpty || code.isEmpty)
@@ -205,8 +206,18 @@ struct SetupView: View {
             Text("opa!")
                 .narrowTitle()
                 .padding(.top, 4)
-            Text("houve um erro na efetuação do login")
-                .narrowSubtitle()
+            
+            if setupError != nil {
+                Text(setupError!.description)
+                    .narrowSubtitle()
+                
+                if case SetupError.unknownError(localizedDescription: let description) = setupError! {
+                    Text(description)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 2)
+                }
+            }
             
             Button(action: {
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
@@ -219,24 +230,43 @@ struct SetupView: View {
     }
     
     func handleScan(result: Result<String, CodeScannerView.ScanError>) {
+        setupMethod = .qrCode
+        
         switch result {
         case .success(let data):
             print("Read QR code")
             
-            if let jsonData = Data(base64Encoded: data) {
-                let jsonString = String(data: jsonData, encoding: .utf8)!
-                print("Decoded: \(jsonString)")
+            guard let jsonData = Data(base64Encoded: data) else {
+                setupError = .codeDecodeError
+                setupScreen = .error
                 
-                setupScreen = .progress
-                
-                DataLoader.login(json: jsonData, completion: updateData)
+                return
             }
+            
+            let jsonString = String(data: jsonData, encoding: .utf8)!
+            print("Decoded: \(jsonString)")
+            
+            if !(jsonString.contains("\"ds_login\":") && jsonString.contains("\"ds_senha\":") && jsonString.contains("\"cd_cliente\":")) {
+                setupError = .codeDataError
+                setupScreen = .error
+                
+                return
+            }
+            
+            setupScreen = .progress
+            
+            DataLoader.login(json: jsonData, completion: updateData)
         case .failure(let error):
-            print(error.localizedDescription)
+            print(error._domain, error._code, error.localizedDescription)
+            
+            setupError = .codeReadError
+            setupScreen = .error
         }
     }
     
     func handleManual(username: String, password: String, code: String) {
+        setupMethod = .manual
+        
         let jsonString = """
             {
                 "ds_login": "\(username)",
@@ -246,6 +276,8 @@ struct SetupView: View {
             }
         """
         let jsonData = jsonString.data(using: .utf8)!
+        
+        setupScreen = .progress
         
         DataLoader.login(json: jsonData, completion: updateData)
     }
@@ -265,9 +297,51 @@ struct SetupView: View {
                 appData.codigoTurmaAtual = resultado.turmas.last?.cd_turma
             }
         case .failure(let error):
-            print(error.localizedDescription)
+            print(error._domain, error._code, error.localizedDescription)
+            
+            if case SetupError.loginError = error {
+                setupError = .loginError(method: setupMethod!)
+            } else if error._code == -1009  {
+                setupError = .connectionError
+            } else {
+                setupError = .unknownError(localizedDescription: error.localizedDescription)
+            }
+            
+            setupScreen = .error
         }
     }
+}
+
+enum SetupError: Error {
+    case codeReadError
+    case codeDecodeError
+    case codeDataError
+    case loginError(method: SetupMethod)
+    case connectionError
+    case unknownError(localizedDescription: String)
+    
+    var description: String {
+        switch self {
+        case .codeReadError:
+            return NSLocalizedString("houve um erro na leitura do QR code.", comment: "")
+        case .codeDecodeError:
+            return NSLocalizedString("houve um erro na decodificação do QR code. certifique-se de que esse é o código correto.", comment: "")
+        case .codeDataError:
+            return NSLocalizedString("houve um erro com os dados do QR code. certifique-se de que esse é o código correto.", comment: "")
+        case .loginError(let method):
+            return NSLocalizedString("houve um erro na efetuação do login. certifique-se de que o \(method == .qrCode ? "o QR code escaneado é o correto" : "os dados inseridos estão corretos").", comment: "")
+        case .connectionError:
+            return NSLocalizedString("houve um erro de conexão. verifique a sua conexão de internet.", comment: "")
+        case .unknownError:
+            return NSLocalizedString("houve um erro desconhecido.", comment: "")
+        }
+    }
+}
+
+enum SetupMethod {
+    case qrCode
+    case manual
+    case unknown
 }
 
 struct SetupButton: View {
@@ -322,7 +396,7 @@ extension View {
         self.clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
     }
     
-    func displaySetup(setupScreen: Binding<SetupScreens?>, appData: DataModel) -> some View {
+    func displaySetup(setupScreen: Binding<SetupScreen?>, appData: DataModel) -> some View {
         self.slideOverCard(item: setupScreen, options: appData.configured ? [.hideExitButton] : [.disableDragToDismiss, .hideExitButton]) { _ in
             SetupView(setupScreen: setupScreen).environmentObject(appData)
         }

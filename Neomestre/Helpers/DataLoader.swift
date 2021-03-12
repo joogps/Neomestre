@@ -75,12 +75,13 @@ struct DataLoader {
             let decoder = JSONDecoder()
             var response = try decoder.decode(Response.self, from: data)
             
-            if response.sucesso {
-                response.resultado.sortDisciplinas()
-                response.resultado.sortMateriais()
-                return .success(response.resultado)
+            if response.sucesso && response.resultado != nil {
+                response.resultado!.sortDisciplinas()
+                response.resultado!.sortMateriais()
+                
+                return .success(response.resultado!)
             } else {
-                return .failure(RequestError.badRequest("The request wasn't successful"))
+                return .failure(SetupError.loginError(method: .unknown))
             }
         } catch let error {
             return .failure(error)

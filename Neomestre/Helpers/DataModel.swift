@@ -159,6 +159,10 @@ struct DisciplinaMaterialApoio: Codable, Hashable {
     var cd_disciplina: Int
     var ds_disciplina: String
     var cd_turma: Int
+    
+    var formattedName: String {
+        return self.ds_disciplina.capitalized
+    }
 }
 
 struct MaterialApoio: Codable, Hashable {
@@ -190,5 +194,5 @@ struct ArquivoMaterialApoio: Codable, Hashable {
 
 struct Response: Codable {
     var sucesso: Bool
-    var resultado: Resultado
+    var resultado: Resultado?
 }
