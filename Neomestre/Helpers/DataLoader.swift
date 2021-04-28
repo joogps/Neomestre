@@ -1,6 +1,6 @@
 //
 //  DataLoader.swift
-//  Neomestre (iOS)
+//  Neomestre
 //
 //  Created by João Gabriel Pozzobon dos Santos on 18/10/20.
 //
@@ -42,8 +42,8 @@ struct DataLoader {
         task.resume()
     }
     
-    static func sync(id: Int, completion: @escaping (Result<Resultado, Error>) -> Void) {
-        let url = URL(string: "https://app.unimestre.com/mobile/v3.0/sincronizacao?ds_filtro="+String(id))!
+    static func sync(resultado: Resultado, completion: @escaping (Result<Resultado, Error>) -> Void) {
+        let url = URL(string: "https://app.unimestre.com/mobile/v3.0/sincronizacao?ds_filtro="+String(resultado.pessoa.cd_pessoa))!
         let request = URLRequest(url: url)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

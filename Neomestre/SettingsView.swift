@@ -1,6 +1,6 @@
 //
-//  UserDetailView.swift
-//  Neomestre (iOS)
+//  SettingsView.swift
+//  Neomestre
 //
 //  Created by João Gabriel Pozzobon dos Santos on 18/10/20.
 //
@@ -21,25 +21,25 @@ struct SettingsView: View {
         NavigationView {
             List {
                 Section (header: Text("Usuários").padding(.top, 10)) {
-                    if appData.resultados.count > 0 {
-                        ForEach(appData.resultados, id: \.cd_pessoa) { resultado in
-                            let pessoa = resultado.pessoa
-                            let turmas = resultado.turmas
+                    if appData.configured {
+                        ForEach(appData.usuarios, id: \.cd_pessoa) { usuario in
+                            let pessoa = usuario.pessoa
+                            let turmas = usuario.turmas
                             
                             Menu {
                                 Text("Turmas")
                                 ForEach(turmas, id: \.cd_turma) { turma in
                                     Button(action: {
-                                        appData.codigoResultadoAtual = resultado.cd_pessoa
-                                        appData.codigoTurmaAtual = turma.cd_turma
+                                        appData.currentUsuarioCode = usuario.cd_pessoa
+                                        appData.currentTurmaCode = turma.cd_turma
                                     }) {
-                                        Label(turma.ds_descricao, systemImage: "checkmark")
-                                            .labelStyle(ClassLabel(isCurrentClass: appData.codigoResultadoAtual == pessoa.cd_pessoa &&
-                                                                                   appData.codigoTurmaAtual == turma.cd_turma))
+                                        Label(turma.ds_descricao.capitalized, systemImage: "checkmark")
+                                            .labelStyle(SelectionLabel(isSelected: appData.currentUsuarioCode == pessoa.cd_pessoa &&
+                                                                                   appData.currentTurmaCode == turma.cd_turma))
                                     }
                                 }
                             } label: {
-                                UserRow(pessoa: pessoa, turma: appData.turmaAtual!.ds_chave_turma, isCurrentUser: appData.codigoResultadoAtual == pessoa.cd_pessoa)
+                                UserRow(pessoa: pessoa, turma: appData.currentTurma!.ds_chave_turma, isCurrentUser: appData.currentUsuarioCode == pessoa.cd_pessoa)
                             }.listRowInsets(EdgeInsets())
                             .padding(.horizontal, 12).padding(.vertical, 6)
                         }.onDelete(perform: delete)
@@ -77,7 +77,7 @@ struct SettingsView: View {
                   secondaryButton: .destructive(Text("Apagar")) {
                     presentationMode.wrappedValue.dismiss()
                     
-                    appData.resultados = []
+                    appData.usuarios = []
                     appData.settings = Settings()
                   }
             )
@@ -85,14 +85,14 @@ struct SettingsView: View {
     }
     
     func delete(offsets: IndexSet) {
-        if appData.resultados.count == 1 {
+        if appData.usuarios.count == 1 {
             showingWipeAlert = true
         } else {
-            appData.resultados.remove(atOffsets: offsets)
+            appData.usuarios.remove(atOffsets: offsets)
             
-            if appData.resultadoAtual == nil && appData.configured {
-                appData.codigoResultadoAtual = appData.resultados.first?.cd_pessoa
-                appData.codigoTurmaAtual = appData.resultadoAtual!.turmas.last?.cd_turma
+            if appData.currentUsuario == nil && appData.configured {
+                appData.currentUsuarioCode = appData.usuarios.first?.cd_pessoa
+                appData.currentTurmaCode = appData.currentUsuario!.turmas.last?.cd_turma
             }
         }
     }
@@ -120,13 +120,13 @@ struct UserRow: View {
     }
 }
 
-struct ClassLabel : LabelStyle {
-    var isCurrentClass: Bool
+struct SelectionLabel : LabelStyle {
+    var isSelected: Bool
     
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.title
-            if isCurrentClass {
+            if isSelected {
                 configuration.icon
             }
         }

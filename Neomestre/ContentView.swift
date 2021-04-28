@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     init() {
         UITabBarItem.appearance().setTitleTextAttributes([.font : UIFont.systemFont(ofSize: 11, weight: .semibold)], for: [])
     }
@@ -20,7 +19,7 @@ struct ContentView: View {
                 Text("início")
             }
             
-            Text("Boletim").tabItem {
+            BoletimView().tabItem {
                 Image(systemName: "list.bullet.rectangle")
                 Text("boletim")
             }

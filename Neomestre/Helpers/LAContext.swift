@@ -1,6 +1,6 @@
 //
 //  LAContext.swift
-//  Neomestre (iOS)
+//  Neomestre
 //
 //  Created by João Gabriel Pozzobon dos Santos on 07/03/21.
 //

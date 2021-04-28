@@ -1,6 +1,6 @@
 //
 //  SetupView.swift
-//  Shared
+//  Neomestre
 //
 //  Created by João Gabriel Pozzobon dos Santos on 14/10/20.
 //
@@ -9,6 +9,8 @@ import SwiftUI
 import LocalAuthentication
 
 import CodeScanner
+import IrregularGradient
+import SlideOverCard
 
 enum SetupScreen: Identifiable {
     var id: Int { self.hashValue }
@@ -200,10 +202,10 @@ struct SetupView: View {
     
     var error: some View {
         VStack(alignment: .leading) {
-            Image(systemName: "xmark.circle")
+            Image(systemName: "exclamationmark.triangle")
                 .resizable()
                 .frame(width: 60, height: 60)
-            Text("opa!")
+            Text("ops!")
                 .narrowTitle()
                 .padding(.top, 4)
             
@@ -285,19 +287,17 @@ struct SetupView: View {
     func updateData(result: Result<Resultado, Error>) {
         switch result {
         case .success(let resultado):
+            appData.usuarios.append(resultado)
+            appData.currentUsuarioCode = resultado.cd_pessoa
+            appData.currentTurmaCode = resultado.turmas.last?.cd_turma
+            
             if !appData.settings.biometrics && LAContext().biometricType != .none {
                 setupScreen = .biometrics
             } else {
                 setupScreen = nil
             }
-            
-            appData.resultados.append(resultado)
-            if appData.resultados.count == 1 {
-                appData.codigoResultadoAtual = resultado.cd_pessoa
-                appData.codigoTurmaAtual = resultado.turmas.last?.cd_turma
-            }
         case .failure(let error):
-            print(error._domain, error._code, error.localizedDescription)
+            print(error)
             
             if case SetupError.loginError = error {
                 setupError = .loginError(method: setupMethod!)

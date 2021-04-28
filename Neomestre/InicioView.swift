@@ -15,7 +15,11 @@ struct InicioView: View {
     
     var body: some View {
         ScrollView {
-            header.padding(.horizontal, 20).padding(.vertical, 26)
+            VStack {
+                header
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 26)
+            }
         }.overlay(VStack {
             LinearGradient(gradient: Gradient(colors: [Color.accentColor.opacity(0.25), Color.accentColor.opacity(0)]), startPoint: .top, endPoint: .bottom).frame(height: 100)
             Spacer()
@@ -30,12 +34,12 @@ struct InicioView: View {
             }
             Spacer()
             
-            if let resultado = appData.resultadoAtual {
+            if let usuario = appData.currentUsuario {
                 VStack {
                     Spacer()
                     
                     Button(action: { showingSettings = true }, label: {
-                        UserPicture(code: resultado.cd_pessoa).frame(width: 38, height: 38)
+                        UserPicture(code: usuario.cd_pessoa).frame(width: 38, height: 38)
                     })
                 }
             }
@@ -54,7 +58,7 @@ struct InicioView: View {
     
     var titleGreeting: String {
         let hour = Calendar.current.component(.hour, from: Date())
-        let suffix = appData.resultadoAtual?.pessoa.ds_nome.split(separator: " ").first?.capitalized ?? "aluno"
+        let suffix = appData.currentUsuario?.pessoa.ds_nome.split(separator: " ").first?.capitalized ?? "aluno"
         
         switch hour {
         case 5..<13:

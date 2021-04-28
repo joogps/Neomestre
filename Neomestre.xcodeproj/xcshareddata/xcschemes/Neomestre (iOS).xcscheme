@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2720394725378C6D0010FEF7"
                BuildableName = "neomestre.app"
-               BlueprintName = "Neomestre (iOS)"
+               BlueprintName = "Neomestre"
                ReferencedContainer = "container:Neomestre.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2720394725378C6D0010FEF7"
             BuildableName = "neomestre.app"
-            BlueprintName = "Neomestre (iOS)"
+            BlueprintName = "Neomestre"
             ReferencedContainer = "container:Neomestre.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2720394725378C6D0010FEF7"
             BuildableName = "neomestre.app"
-            BlueprintName = "Neomestre (iOS)"
+            BlueprintName = "Neomestre"
             ReferencedContainer = "container:Neomestre.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

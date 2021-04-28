@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+import SlideOverCard
+import SwiftUIRefresh
+
 struct MateriaisView: View {
     @EnvironmentObject var appData: DataModel
-    @Namespace private var animation
     
     @State var currentMaterial: MaterialApoio?
     
@@ -37,7 +39,7 @@ struct MateriaisView: View {
     }
     
     var materiais: [MaterialApoio]? {
-        if var materiais = appData.materiaisAtuais {
+        if var materiais = appData.currentMateriais {
             if filterDisciplina != nil {
                 materiais = materiais.filter({ $0.cd_disciplina == filterDisciplina })
             }
@@ -59,12 +61,19 @@ struct MateriaisView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                search
-                
-                if materiais != nil {
-                    header
-                    list
-                }
+                VStack {
+                    search
+                    
+                    if materiais != nil {
+                        header
+                        list
+                    }
+                }.pullToRefresh(
+                    isRefreshing: $appData.refreshing,
+                    onRefresh: {
+                        DataLoader.sync(resultado: appData.currentUsuario!, completion: updateData)
+                    }
+                )
             }.navigationTitle("materiais")
             .navigationBarItems(trailing: Button(action: {
                 SOCManager.present(isPresented: $showingFilter, content: {
@@ -74,6 +83,16 @@ struct MateriaisView: View {
             }, label: {
                 Image(systemName: "line.horizontal.3.decrease.circle\(filtering ? ".fill" : "")").font(.system(size: 22, weight: .regular))
             }))
+        }
+    }
+    
+    func updateData(result: Result<Resultado, Error>) {
+        switch result {
+        case .success(let resultado):
+            appData.usuarios[appData.usuarios.firstIndex(where: { $0.cd_pessoa == resultado.cd_pessoa })!] = resultado
+            appData.refreshing = false
+        case .failure(let error):
+            print(error._domain, error._code, error.localizedDescription)
         }
     }
     
@@ -108,7 +127,7 @@ struct MateriaisView: View {
     var list: some View {
         LazyVStack (alignment: .leading, spacing: 10) {
             ForEach(materiais!, id: \.cd_material_apoio) { material in
-                MaterialRow(material: material, disciplina: appData.getDisciplina(by: material.cd_disciplina)!, animation: animation).onTapGesture {
+                MaterialRow(material: material, disciplina: appData.getDisciplina(by: material.cd_disciplina)!).onTapGesture {
                     self.currentMaterial = material
                 }
             }
@@ -119,8 +138,6 @@ struct MateriaisView: View {
 struct MaterialRow: View {
     let material: MaterialApoio
     let disciplina: DisciplinaMaterialApoio
-    
-    var animation: Namespace.ID
     
     var body: some View {
         HStack {
@@ -140,7 +157,7 @@ struct MaterialRow: View {
             }
             Spacer()
         }.padding(15)
-        .background(Color(.systemGray6).matchedGeometryEffect(id: "Background \(material.cd_material_apoio)", in: animation))
+        .background(Color(.systemGray6))
         .continuousCornerRadius(16.0)
     }
 }
@@ -168,7 +185,7 @@ struct FilterView: View {
             Spacer()
             Menu {
                 Text("Disciplinas")
-                ForEach(appData.disciplinasAtuais!, id: \.cd_disciplina) { disciplina in
+                ForEach(appData.currentDisciplinas!, id: \.cd_disciplina) { disciplina in
                     Button(action: {
                             filterDisciplina = disciplina.cd_disciplina == filterDisciplina ? nil : disciplina.cd_disciplina
                     }, label: {

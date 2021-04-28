@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Main structure
 class DataModel: ObservableObject {
     @Published var settings: Settings = Settings() {
         didSet {
@@ -19,12 +20,12 @@ class DataModel: ObservableObject {
         }
     }
     
-    @Published var resultados: Array<Resultado> = [] {
+    @Published var usuarios: Array<Resultado> = [] {
         didSet {
             do {
                 let encoder = JSONEncoder()
-                let encodedResultados = try encoder.encode(resultados)
-                UserDefaults.standard.set(encodedResultados, forKey: "resultados")
+                let encodedResultados = try encoder.encode(usuarios)
+                UserDefaults.standard.set(encodedResultados, forKey: "usuarios")
             } catch let error {
                 print(error.localizedDescription)
             }
@@ -32,46 +33,21 @@ class DataModel: ObservableObject {
     }
     
     var configured: Bool {
-        return resultados.count > 0
+        return usuarios.count > 0
     }
     
-    @Published var codigoResultadoAtual: Int? = UserDefaults.standard.integer(forKey: "pessoaAtual") {
+    @Published var refreshing: Bool = false
+    
+    @Published var currentUsuarioCode: Int? = UserDefaults.standard.integer(forKey: "currentUsuario") {
         didSet {
-            UserDefaults.standard.set(codigoResultadoAtual, forKey: "pessoaAtual")
+            UserDefaults.standard.set(currentUsuarioCode, forKey: "currentUsuario")
         }
     }
-    @Published var codigoTurmaAtual: Int? = UserDefaults.standard.integer(forKey: "turmaAtual") {
+    
+    @Published var currentTurmaCode: Int? = UserDefaults.standard.integer(forKey: "currentTurma") {
         didSet {
-            UserDefaults.standard.set(codigoTurmaAtual, forKey: "turmaAtual")
+            UserDefaults.standard.set(currentTurmaCode, forKey: "currentTurma")
         }
-    }
-    
-    var resultadoAtual: Resultado? {
-        if let resultado = resultados.first(where: { $0.cd_pessoa == codigoResultadoAtual }) {
-            return resultado
-        }
-        return nil
-    }
-    
-    var turmaAtual: Turma? {
-        if let turma = resultadoAtual!.turmas.first(where: { $0.cd_turma == codigoTurmaAtual }) {
-            return turma
-        }
-        return nil
-    }
-    
-    var disciplinasAtuais: [DisciplinaMaterialApoio]? {
-        if let resultado = resultadoAtual {
-            return resultado.arr_disciplinas_material_apoio.filter( { $0.cd_turma == codigoTurmaAtual } )
-        }
-        return nil
-    }
-    
-    var materiaisAtuais: [MaterialApoio]? {
-        if let resultado = resultadoAtual {
-            return resultado.arr_materiais_apoio.filter( { $0.cd_turma == codigoTurmaAtual } )
-        }
-        return nil
     }
     
     init() {
@@ -83,35 +59,14 @@ class DataModel: ObservableObject {
             }
         }
         
-        if let data = UserDefaults.standard.data(forKey: "resultados") {
+        if let data = UserDefaults.standard.data(forKey: "usuarios") {
             do {
                 let decoder = JSONDecoder()
-                resultados = try decoder.decode(Array<Resultado>.self, from: data)
+                usuarios = try decoder.decode(Array<Resultado>.self, from: data)
             } catch let error {
                 print(error.localizedDescription)
             }
         }
-    }
-    
-    func getDisciplina(by code: Int) -> DisciplinaMaterialApoio? {
-        if let resultado = resultadoAtual {
-            return resultado.arr_disciplinas_material_apoio.filter( { $0.cd_disciplina == code } )[0]
-        }
-        return nil
-    }
-    
-    func getMateriais(for disciplina: DisciplinaMaterialApoio) -> [MaterialApoio]? {
-        if let resultado = resultadoAtual {
-            return resultado.arr_materiais_apoio.filter( { $0.cd_disciplina == disciplina.cd_disciplina } )
-        }
-        return nil
-    }
-    
-    func getArquivos(for material: MaterialApoio) -> [ArquivoMaterialApoio]? {
-        if let resultado = resultadoAtual {
-            return resultado.arr_materiais_apoio_arquivos.filter( { $0.cd_material_apoio == material.cd_material_apoio } )
-        }
-        return nil
     }
 }
 
@@ -119,80 +74,68 @@ struct Settings: Codable {
     var biometrics = false
 }
 
-
-struct Resultado: Codable, Hashable {
-    var pessoas: [Pessoa]
-    var turmas: [Turma]
-    var arr_disciplinas_material_apoio: [DisciplinaMaterialApoio]
-    var arr_materiais_apoio: [MaterialApoio]
-    var arr_materiais_apoio_arquivos: [ArquivoMaterialApoio]
-    
-    mutating func sortDisciplinas() {
-        arr_disciplinas_material_apoio.sort(by: { $0.ds_disciplina > $1.ds_disciplina})
+// Computed properties and filtering functions
+extension DataModel {
+    var currentUsuario: Resultado? {
+        if let usuario = usuarios.first(where: { $0.cd_pessoa == currentUsuarioCode }) {
+            return usuario
+        }
+        return nil
     }
     
-    mutating func sortMateriais() {
-        arr_materiais_apoio.sort(by: { $0.date > $1.date})
+    var currentTurma: Turma? {
+        if let turma = currentUsuario!.turmas.first(where: { $0.cd_turma == currentTurmaCode }) {
+            return turma
+        }
+        return nil
     }
     
-    var pessoa: Pessoa {
-        get { return pessoas[0] }
+    var currentMatricula: Matricula? {
+        if let matricula = currentUsuario!.matriculas.first(where: { $0.cd_turma == currentTurmaCode }) {
+            return matricula
+        }
+        return nil
     }
-    var cd_pessoa: Int {
-        get { return pessoa.cd_pessoa }
-    }
-}
-
-struct Pessoa: Codable, Hashable {
-    var cd_pessoa: Int
-    var ds_nome: String
-}
-
-struct Turma: Codable, Hashable {
-    var cd_turma: Int
-    var ds_chave_turma: String
-    var ds_anosemestre: String
-    var ds_descricao: String
-}
-
-struct DisciplinaMaterialApoio: Codable, Hashable {
-    var cd_disciplina: Int
-    var ds_disciplina: String
-    var cd_turma: Int
     
-    var formattedName: String {
-        return self.ds_disciplina.capitalized
+    var currentEtapas: [Etapa]? {
+        if let matricula = currentMatricula {
+            return currentUsuario!.arr_etapas.filter( { $0.cd_matricula == matricula.cd_matricula } )
+        }
+        return nil
     }
-}
-
-struct MaterialApoio: Codable, Hashable {
-    var cd_disciplina: Int
-    var cd_turma: Int
-    var ds_titulo: String
-    var me_descricao: String
-    var dt_material: String
-    var cd_material_apoio: Int
-    var ds_link_material: String?
     
-    var date: Date {
-        let isoFormatter = ISO8601DateFormatter()
-        return isoFormatter.date(from: dt_material)!
+    var currentDisciplinas: [DisciplinaMaterialApoio]? {
+        if let usuario = currentUsuario {
+            return usuario.arr_disciplinas_material_apoio.filter( { $0.cd_turma == currentTurmaCode } )
+        }
+        return nil
     }
-        
-    var formattedDate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        return dateFormatter.string(from: date)
+    
+    var currentMateriais: [MaterialApoio]? {
+        if let usuario = currentUsuario {
+            return usuario.arr_materiais_apoio.filter( { $0.cd_turma == currentTurmaCode } )
+        }
+        return nil
     }
-}
-
-struct ArquivoMaterialApoio: Codable, Hashable {
-    var cd_material_arquivo: Int
-    var ds_nome_arquivo: String
-    var cd_material_apoio: Int
-}
-
-struct Response: Codable {
-    var sucesso: Bool
-    var resultado: Resultado?
+    
+    func getDisciplina(by code: Int) -> DisciplinaMaterialApoio? {
+        if let resultado = currentUsuario {
+            return resultado.arr_disciplinas_material_apoio.filter( { $0.cd_disciplina == code } )[0]
+        }
+        return nil
+    }
+    
+    func getMateriais(for disciplina: DisciplinaMaterialApoio) -> [MaterialApoio]? {
+        if let resultado = currentUsuario {
+            return resultado.arr_materiais_apoio.filter( { $0.cd_disciplina == disciplina.cd_disciplina } )
+        }
+        return nil
+    }
+    
+    func getArquivos(for material: MaterialApoio) -> [ArquivoMaterialApoio]? {
+        if let resultado = currentUsuario {
+            return resultado.arr_materiais_apoio_arquivos.filter( { $0.cd_material_apoio == material.cd_material_apoio } )
+        }
+        return nil
+    }
 }
